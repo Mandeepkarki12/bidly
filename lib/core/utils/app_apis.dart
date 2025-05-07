@@ -28,5 +28,5 @@ class AppApis {
 String get appApisBaseURL => AppApis()._dio.options.baseUrl;
 
 class AppApi {
-  
+
 }

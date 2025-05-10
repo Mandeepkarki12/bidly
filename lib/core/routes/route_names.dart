@@ -1,3 +1,4 @@
 class RouteNames {
-  static const String tryPage = 'tryPage';
+  static const String loginScreen  = 'loginScreen ';
+  static const String homeScreen = 'homeScreen';
 }

@@ -4,17 +4,17 @@ import 'package:bidly/core/widgets/custom_rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+class CustomWebAppBar extends StatefulWidget implements PreferredSizeWidget {
+  const CustomWebAppBar({super.key});
 
   @override
-  State<CustomAppBar> createState() => _CustomAppBarState();
+  State<CustomWebAppBar> createState() => _CustomWebAppBarState();
 
   @override
   Size get preferredSize => const Size.fromHeight(90);
 }
 
-class _CustomAppBarState extends State<CustomAppBar> {
+class _CustomWebAppBarState extends State<CustomWebAppBar> {
   bool _isMarketplaceHovered = false;
   bool _isRankingHovered = false;
   bool _isWalletHovered = false;

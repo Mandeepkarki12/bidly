@@ -1,4 +1,3 @@
-import 'package:bidly/core/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {

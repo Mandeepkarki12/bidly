@@ -113,9 +113,9 @@ class CustomTabletFooter extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                     const  Icon(
                         Icons.send,
-                        size: height * 0.02,
+                        size: 18,
                         color: AppColors.primaryText,
                       ),
                       SizedBox(width: width * 0.003),

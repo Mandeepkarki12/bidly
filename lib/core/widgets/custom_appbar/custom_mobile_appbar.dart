@@ -25,8 +25,8 @@ class _CustomMobileAppBarState extends State<CustomMobileAppBar> {
         children: [
           SvgPicture.asset(
             'assets/icons/app_logo.svg',
-            height: height * 0.05,
-            width: width * 0.05,
+            height: 35,
+            width: 35,
           ),
           SizedBox(width: width * 0.04),
           Text('Bidly', style: const AppTextStyles().h4SpaceMono),

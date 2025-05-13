@@ -1,5 +1,4 @@
 class Dimensions {
-  static double mobileWidth = 600;
-  static double tabletWidth = 900;
-  static double desktopWidth = 1200;
+  static double mobileWidth = 750;
+  static double tabletWidth = 1200;
 }

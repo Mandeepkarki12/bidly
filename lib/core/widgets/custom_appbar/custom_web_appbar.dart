@@ -31,8 +31,8 @@ class _CustomWebAppBarState extends State<CustomWebAppBar> {
         children: [
           SvgPicture.asset(
             'assets/icons/app_logo.svg',
-            height: height * 0.05,
-            width: width * 0.05,
+            height: 40,
+            width: 40,
           ),
           SizedBox(width: width * 0.01),
           Text('Bidly', style: const AppTextStyles().h4SpaceMono),
@@ -77,9 +77,9 @@ class _CustomWebAppBarState extends State<CustomWebAppBar> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.person,
-                    size: height * 0.02,
+                    size: 22,
                     color: AppColors.primaryText,
                   ),
                   SizedBox(width: width * 0.003),

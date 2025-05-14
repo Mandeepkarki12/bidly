@@ -27,6 +27,7 @@ class _CustomWebAppBarState extends State<CustomWebAppBar> {
     return AppBar(
       backgroundColor: AppColors.backGroundPrimary,
       toolbarHeight: 90,
+      automaticallyImplyLeading: false,
       title: Row(
         children: [
           SvgPicture.asset(

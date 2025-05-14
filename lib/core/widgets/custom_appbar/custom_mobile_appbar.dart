@@ -21,6 +21,7 @@ class _CustomMobileAppBarState extends State<CustomMobileAppBar> {
     return AppBar(
       backgroundColor: AppColors.backGroundPrimary,
       toolbarHeight: 90,
+      automaticallyImplyLeading: false,
       title: Row(
         children: [
           SvgPicture.asset(

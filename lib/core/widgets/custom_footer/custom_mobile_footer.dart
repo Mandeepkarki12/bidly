@@ -14,7 +14,7 @@ class CustomMobileFooter extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: 10),
-      height: 800,
+      height: 820,
       width: double.infinity,
       color: AppColors.backGroundSecondary,
       child: Column(

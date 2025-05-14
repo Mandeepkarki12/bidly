@@ -10,7 +10,6 @@ class CustomTabletFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: width * 0.05),
@@ -113,7 +112,7 @@ class CustomTabletFooter extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                     const  Icon(
+                      const Icon(
                         Icons.send,
                         size: 18,
                         color: AppColors.primaryText,

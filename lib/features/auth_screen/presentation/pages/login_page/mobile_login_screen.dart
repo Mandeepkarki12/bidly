@@ -36,7 +36,7 @@ class MobileLoginScreen extends StatelessWidget {
               ),
               SizedBox(
                   width: double.infinity,
-                  height: 50,
+                  height: 60,
                   child: CustomTextField(
                     prefix: const Icon(
                       Icons.email_outlined,
@@ -54,7 +54,7 @@ class MobileLoginScreen extends StatelessWidget {
               ),
               SizedBox(
                   width: double.infinity,
-                  height: 50,
+                  height: 60,
                   child: CustomTextField(
                     suffix: const Icon(
                       Icons.remove_red_eye,
@@ -101,7 +101,7 @@ class MobileLoginScreen extends StatelessWidget {
                       child: Text('Login',
                           style: const AppTextStyles().baseBodyWorkSans))),
               const SizedBox(
-                height: 15,
+                height: 30,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

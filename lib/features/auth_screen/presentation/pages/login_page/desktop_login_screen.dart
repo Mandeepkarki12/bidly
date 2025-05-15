@@ -1,3 +1,4 @@
+import 'package:bidly/core/routes/route_names.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_web_appbar.dart';
@@ -88,8 +89,15 @@ class DesktopLoginScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Forgot Password ?',
-                                style: const AppTextStyles().baseBodyWorkSans),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, RouteNames.forgotPasswordScreen);
+                              },
+                              child: Text('Forgot Password ?',
+                                  style:
+                                      const AppTextStyles().baseBodyWorkSans),
+                            ),
                           ],
                         ),
                         SizedBox(

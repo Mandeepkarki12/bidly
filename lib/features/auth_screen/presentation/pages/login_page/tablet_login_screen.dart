@@ -1,3 +1,4 @@
+import 'package:bidly/core/routes/route_names.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
@@ -95,14 +96,17 @@ class TabletLoginScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              TextButton(
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, RouteNames.forgotPasswordScreen);
+                                },
                                 child: Text(
                                   'Forgot Password ?',
                                   style: const AppTextStyles()
                                       .baseBodyWorkSans
                                       .copyWith(color: AppColors.primaryText),
                                 ),
-                                onPressed: () {},
                               ),
                             ],
                           ),

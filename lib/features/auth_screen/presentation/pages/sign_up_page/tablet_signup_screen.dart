@@ -93,7 +93,7 @@ class TabletSignUpScreen extends StatelessWidget {
                               color: AppColors.secondaryText,
                             ),
                             prefix: const Icon(
-                              Icons.email_outlined,
+                              Icons.lock,
                               color: AppColors.secondaryText,
                             ),
                             borderRadius: 20,
@@ -115,7 +115,7 @@ class TabletSignUpScreen extends StatelessWidget {
                               color: AppColors.secondaryText,
                             ),
                             prefix: const Icon(
-                              Icons.email_outlined,
+                              Icons.lock,
                               color: AppColors.secondaryText,
                             ),
                             borderRadius: 20,

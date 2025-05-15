@@ -4,7 +4,7 @@ import 'package:bidly/core/theme/app_color.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp()); 
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -1,3 +1,4 @@
+import 'package:bidly/core/routes/route_names.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
@@ -66,7 +67,10 @@ class TabletForgotPasswordScreen extends StatelessWidget {
                       height: 40,
                     ),
                     CustomRoundedButton(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, RouteNames.changePasswordScreen);
+                        },
                         height: 55,
                         width: 400,
                         color: AppColors.primaryButton,

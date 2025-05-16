@@ -1,6 +1,7 @@
 import 'package:bidly/core/routes/route_names.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
+import 'package:bidly/features/auth_screen/presentation/pages/change_password_screen.dart';
 import 'package:bidly/features/auth_screen/presentation/pages/forget_password_screen.dart';
 import 'package:bidly/features/auth_screen/presentation/pages/login_screen.dart';
 import 'package:bidly/features/auth_screen/presentation/pages/signup_screen.dart';
@@ -16,6 +17,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const SignUpScreen());
       case RouteNames.forgotPasswordScreen:
         return MaterialPageRoute(builder: (_) => const ForgotPasswordScreen());
+      case RouteNames.changePasswordScreen:
+        return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
       case RouteNames.homeScreen:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       default:

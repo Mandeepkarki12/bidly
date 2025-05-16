@@ -1,3 +1,4 @@
+import 'package:bidly/core/routes/route_names.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
@@ -53,7 +54,9 @@ class MobileForgotPasswordScreen extends StatelessWidget {
               height: 30,
             ),
             CustomRoundedButton(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, RouteNames.changePasswordScreen);
+                },
                 height: 60,
                 width: double.infinity,
                 color: AppColors.primaryButton,

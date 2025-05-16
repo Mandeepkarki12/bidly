@@ -6,6 +6,7 @@ import 'package:bidly/core/widgets/custom_footer/custom_web_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';
 import 'package:bidly/core/widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
+
 //this is change
 class DesktopLoginScreen extends StatelessWidget {
   const DesktopLoginScreen({super.key});

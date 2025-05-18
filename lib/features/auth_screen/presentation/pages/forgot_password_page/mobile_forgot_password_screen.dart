@@ -55,7 +55,7 @@ class MobileForgotPasswordScreen extends StatelessWidget {
             ),
             CustomRoundedButton(
                 onTap: () {
-                  Navigator.pushNamed(context, RouteNames.changePasswordScreen);
+                  Navigator.pushNamed(context, RouteNames.otpScreen);
                 },
                 height: 60,
                 width: double.infinity,

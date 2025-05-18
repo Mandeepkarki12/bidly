@@ -4,6 +4,7 @@ import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/features/auth_screen/presentation/pages/change_password_screen.dart';
 import 'package:bidly/features/auth_screen/presentation/pages/forget_password_screen.dart';
 import 'package:bidly/features/auth_screen/presentation/pages/login_screen.dart';
+import 'package:bidly/features/auth_screen/presentation/pages/otp_screen.dart';
 import 'package:bidly/features/auth_screen/presentation/pages/signup_screen.dart';
 import 'package:bidly/features/home_screen/presentation/pages/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
       case RouteNames.homeScreen:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
+         case RouteNames.otpScreen:
+        return MaterialPageRoute(builder: (_) => const otpScreen());
       default:
         return MaterialPageRoute(builder: (_) {
           return Scaffold(

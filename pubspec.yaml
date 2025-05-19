@@ -46,6 +46,8 @@ dependencies:
   bloc: ^9.0.0
   flutter_svg: ^2.0.10+1
   pinput: ^5.0.1
+  octo_image: ^2.1.0
+  
 
 dev_dependencies:
   flutter_test:

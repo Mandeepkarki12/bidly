@@ -1,3 +1,4 @@
+import 'package:bidly/core/theme/app_color.dart';
 import 'package:flutter/material.dart';
 
 class CustomRoundedButton extends StatelessWidget {
@@ -24,7 +25,7 @@ class CustomRoundedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: shouldFill ? color : Colors.white,
+      color: shouldFill ? color : AppColors.backGroundPrimary,
       borderRadius: BorderRadius.circular(radius),
       child: InkWell(
         onTap: onTap,

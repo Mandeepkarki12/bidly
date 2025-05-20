@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           scaffoldBackgroundColor: AppColors.backGroundPrimary,
           useMaterial3: true),
-      initialRoute: RouteNames.homeScreen,
+      initialRoute: RouteNames.signupScreen,
       onGenerateRoute: Routes.generateRoute,
     );
   }

@@ -69,7 +69,7 @@ class TabletForgotPasswordScreen extends StatelessWidget {
                     CustomRoundedButton(
                         onTap: () {
                           Navigator.pushNamed(
-                              context, RouteNames.changePasswordScreen);
+                              context, RouteNames.otpScreen);
                         },
                         height: 55,
                         width: 400,

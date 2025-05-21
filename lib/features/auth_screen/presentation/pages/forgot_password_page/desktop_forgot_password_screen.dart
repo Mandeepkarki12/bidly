@@ -65,7 +65,7 @@ class DesktopForgotPasswordScreen extends StatelessWidget {
                     ),
                     CustomRoundedButton(
                        onTap: () {
-                  Navigator.pushNamed(context, RouteNames.changePasswordScreen);
+                  Navigator.pushNamed(context, RouteNames.otpScreen);
                 },
                         height: 55,
                         width: 450,

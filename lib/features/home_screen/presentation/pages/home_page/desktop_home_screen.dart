@@ -3,7 +3,9 @@ import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_web_appbar.dart';
 import 'package:bidly/core/widgets/custom_footer/custom_web_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';
+import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/aution_widget.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/browse_categories.dart';
+import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/discover_more_aution.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/trending_auctions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -281,8 +283,7 @@ class DesktopHomeScreen extends StatelessWidget {
                               style: const AppTextStyles().bodyText,
                             ),
                             CustomRoundedButton(
-                              onTap: 
-                              (){},
+                                onTap: () {},
                                 height: 60,
                                 width: 187,
                                 shouldFill: false,
@@ -307,10 +308,25 @@ class DesktopHomeScreen extends StatelessWidget {
                                   ],
                                 ))
                           ],
-                        )
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            DiscoverMoreAution(),
+                            DiscoverMoreAution(),
+                            DiscoverMoreAution()
+                          ],
+                        ),
                       ],
                     ),
-                  )
+                  ),
+                  const AuctionWidget(),
+                  const SizedBox(
+                    height: 80,
+                  ),
                 ],
               ),
             ),

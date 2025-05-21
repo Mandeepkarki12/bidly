@@ -27,10 +27,11 @@ class MobileSignUpScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            Text('Create an Account', style: const AppTextStyles().h3WorkSans),
+            Text('Create an Account', style: const AppTextStyles().h4WorkSans),
             const SizedBox(height: 20),
             Text(
               'Welcome! enter your details and start\n creating, collecting and selling Products.',
+              textAlign: TextAlign.center,
               style: const AppTextStyles().baseBodyWorkSans,
             ),
             const SizedBox(

@@ -97,7 +97,9 @@ class MobileLoginScreen extends StatelessWidget {
                 height: 15,
               ),
               CustomRoundedButton(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteNames.homeScreen);
+                  },
                   height: 50,
                   width: double.infinity,
                   color: AppColors.primaryButton,

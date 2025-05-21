@@ -105,7 +105,10 @@ class DesktopLoginScreen extends StatelessWidget {
                           height: height * 0.02,
                         ),
                         CustomRoundedButton(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, RouteNames.homeScreen);
+                            },
                             height: 50,
                             width: 350,
                             color: AppColors.primaryButton,

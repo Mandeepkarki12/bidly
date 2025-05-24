@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
-class DiscoverMoreAution extends StatelessWidget {
-  const DiscoverMoreAution({super.key});
+class DesktopDiscoverMoreAution extends StatelessWidget {
+  const DesktopDiscoverMoreAution({super.key});
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;

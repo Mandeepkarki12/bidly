@@ -6,7 +6,14 @@ class MobileHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomMobileAppBar(),
+      appBar: CustomMobileAppBar(
+
+      ),
+      body: SingleChildScrollView(child: Column(
+        children: [
+          
+        ],
+      )),
     );
   }
 }

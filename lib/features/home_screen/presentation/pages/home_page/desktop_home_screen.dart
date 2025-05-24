@@ -3,10 +3,10 @@ import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_web_appbar.dart';
 import 'package:bidly/core/widgets/custom_footer/custom_web_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';
-import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/aution_widget.dart';
-import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/browse_categories.dart';
-import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/discover_more_aution.dart';
-import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/trending_auctions.dart';
+import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_aution_widget.dart';
+import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_browse_categories.dart';
+import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_discover_more_aution.dart';
+import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_trending_auctions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
@@ -225,9 +225,9 @@ class DesktopHomeScreen extends StatelessWidget {
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TrendingAuctions(),
-                      TrendingAuctions(),
-                      TrendingAuctions(),
+                      DesktopTrendingAuctions(),
+                      DesktopTrendingAuctions(),
+                      DesktopTrendingAuctions()
                     ],
                   ),
                   const SizedBox(
@@ -259,7 +259,7 @@ class DesktopHomeScreen extends StatelessWidget {
                             ),
                             itemCount: 8,
                             itemBuilder: (context, index) {
-                              return const BrowseCategories();
+                              return const DesktopBrowseCategories();
                             },
                           ),
                         ),
@@ -315,15 +315,15 @@ class DesktopHomeScreen extends StatelessWidget {
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            DiscoverMoreAution(),
-                            DiscoverMoreAution(),
-                            DiscoverMoreAution()
+                            DesktopDiscoverMoreAution(),
+                            DesktopDiscoverMoreAution(),
+                            DesktopDiscoverMoreAution(),
                           ],
                         ),
                       ],
                     ),
                   ),
-                  const AuctionWidget(),
+                  const DesktopAuctionWidget(),
                   const SizedBox(
                     height: 80,
                   ),

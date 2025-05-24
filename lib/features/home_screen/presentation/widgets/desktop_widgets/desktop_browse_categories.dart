@@ -2,8 +2,8 @@ import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 import 'package:flutter/material.dart';
 
-class BrowseCategories extends StatelessWidget {
-  const BrowseCategories({super.key});
+class DesktopBrowseCategories extends StatelessWidget {
+  const DesktopBrowseCategories({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,6 @@ class BrowseCategories extends StatelessWidget {
           ),
           const SizedBox(height: 25,),
           Text('Titles', maxLines: 1, overflow: TextOverflow.ellipsis,style:const  AppTextStyles().h5WorkSans,),
-          
-         
         ],
       ),
     );

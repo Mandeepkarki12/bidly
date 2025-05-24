@@ -5,14 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
-class AuctionWidget extends StatelessWidget {
-  const AuctionWidget({super.key});
+class TabletAuctionWidget extends StatelessWidget {
+  const TabletAuctionWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return SizedBox(
-      height: 640,
+      height: 560,
       width: width,
       child: Stack(
         children: [
@@ -32,8 +32,8 @@ class AuctionWidget extends StatelessWidget {
             ),
           ),
           Positioned(
-              left: 60,
-              right: 60,
+              left: 30,
+              right: 30,
               bottom: 60,
               child: SizedBox(
                 height: 250,
@@ -92,7 +92,7 @@ class AuctionWidget extends StatelessWidget {
                           children: [
                             Text(
                               'Nike Products',
-                              style: const AppTextStyles().h2WorkSans,
+                              style: const AppTextStyles().h3WorkSans,
                             ),
                             const SizedBox(
                               height: 30,

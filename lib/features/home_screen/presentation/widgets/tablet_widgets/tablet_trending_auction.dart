@@ -4,18 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
-class TrendingAuctions extends StatelessWidget {
-  const TrendingAuctions({super.key});
+class TabletTrendingAuction extends StatelessWidget {
+  const TabletTrendingAuction({super.key});
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return SizedBox(
-      width: width * 0.24,
+      width: width * 0.4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 270,
+            height: 320,
             width: double.infinity,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),

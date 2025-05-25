@@ -1,13 +1,6 @@
-import '../utils/type_of.dart';
+import 'package:bidly/core/errors/failure.dart';
+import 'package:dartz/dartz.dart';
 
-abstract class UsecaseWithParams<Type, Params> {
-  const UsecaseWithParams();
-
-  ResultFuture<Type> call(Params params);
-}
-
-abstract class UsecaseWithoutParams<Type> {
-  const UsecaseWithoutParams();
-
-  ResultFuture<Type> call();
+abstract interface class UseCaseWithParams<SuceessType, Params> {
+  Future<Either<Failure, SuceessType>> call(Params params);
 }

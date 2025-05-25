@@ -1,8 +1,17 @@
 part of 'auth_screen_bloc.dart';
 
-abstract class AuthScreenEvent extends Equatable {
-  const AuthScreenEvent();
+@immutable
+sealed class AuthScreenEvent {}
 
-  @override
-  List<Object> get props => [];
+final class AuthScreenSignupEvent extends AuthScreenEvent {
+  final String userName;
+  final String email;
+  final String password;
+
+  AuthScreenSignupEvent({
+    required this.userName,
+    required this.email,
+    required this.password,
+  });
 }
+

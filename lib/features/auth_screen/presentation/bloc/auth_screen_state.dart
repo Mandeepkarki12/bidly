@@ -1,9 +1,20 @@
 part of 'auth_screen_bloc.dart';
 
-abstract class AuthScreenState extends Equatable {
-  const AuthScreenState();  
+@immutable
+sealed class AuthScreenState {}
 
-  @override
-  List<Object> get props => [];
+final class AuthScreenInitial extends AuthScreenState {}
+
+final class AuthScreenLoading extends AuthScreenState {}
+
+final class AuthScreenSucess extends AuthScreenState {
+  final String userId;
+
+  AuthScreenSucess({required this.userId});
 }
-class AuthScreenInitial extends AuthScreenState {}
+
+final class AuthScreenFailure extends AuthScreenState {
+  final String message;
+
+  AuthScreenFailure({required this.message});
+}

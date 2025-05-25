@@ -1,15 +1,5 @@
-import 'package:equatable/equatable.dart';
+class Failure {
+  final String message;
 
-abstract class Failure extends Equatable {
-  const Failure([List properties = const <dynamic>[]]) : super();
-}
-
-class ServerFailure extends Failure {
-  @override
-  List<Object?> get props => throw UnimplementedError();
-}
-
-class CacheFailure extends Failure {
-  @override
-  List<Object?> get props => throw UnimplementedError();
+  Failure([this.message = "An unexpected error occurred."]);
 }

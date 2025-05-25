@@ -3,12 +3,10 @@ import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
 import 'package:bidly/core/widgets/custom_footer/custom_mobile_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';
-import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_browse_categories.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/mobile_widgets/mobile_auction_widget.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/mobile_widgets/mobile_browse_categories.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/mobile_widgets/mobile_discover_more_auction.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/mobile_widgets/mobile_trending_auction.dart';
-import 'package:bidly/features/home_screen/presentation/widgets/tablet_widgets/tablet_trending_auction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
@@ -155,22 +153,42 @@ class MobileHomeScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('240k+', style: const AppTextStyles().h5SpaceMono),
-                Text('100k+', style: const AppTextStyles().h5SpaceMono),
-                Text('200k+', style: const AppTextStyles().h5SpaceMono),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Text('Total sales',
-                    style: const AppTextStyles().baseBodyWorkSans),
-                SizedBox(width: width * 0.1),
-                Text('Auctions', style: const AppTextStyles().baseBodyWorkSans),
-                SizedBox(width: width * 0.13),
-                Text('Sellers', style: const AppTextStyles().baseBodyWorkSans),
+                SizedBox(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('200k+', style: const AppTextStyles().h5SpaceMono),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text('Auctions',
+                            style: const AppTextStyles().baseBodyWorkSans)
+                      ]),
+                ),
+                SizedBox(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('100k+', style: const AppTextStyles().h5SpaceMono),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text('Users',
+                            style: const AppTextStyles().baseBodyWorkSans)
+                      ]),
+                ),
+                SizedBox(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('50k+', style: const AppTextStyles().h5SpaceMono),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text('Bids',
+                            style: const AppTextStyles().baseBodyWorkSans)
+                      ]),
+                ),
               ],
             ),
             const SizedBox(

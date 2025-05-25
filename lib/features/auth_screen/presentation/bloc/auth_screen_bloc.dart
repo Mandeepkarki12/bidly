@@ -13,9 +13,10 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
   })  : _userSignup = userSignup,
         super(AuthScreenInitial()) {
     on<AuthScreenSignupEvent>((event, emit) async {
+      emit(AuthScreenLoading());
       final response = await _userSignup(UserSignupParameters(
           userName: event.userName,
-          email: event.userName,
+          email: event.email,
           password: event.password));
       response.fold((failure) {
         emit(AuthScreenFailure(message: failure.message));

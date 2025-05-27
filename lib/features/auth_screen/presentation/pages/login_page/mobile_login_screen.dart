@@ -85,7 +85,7 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                   ),
                   SizedBox(
                       width: double.infinity,
-                      height: 60,
+                      height: 85,
                       child: CustomTextField(
                         prefix: const Icon(
                           Icons.email_outlined,
@@ -117,7 +117,7 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                   ),
                   SizedBox(
                       width: double.infinity,
-                      height: 60,
+                      height: 85,
                       child: CustomTextField(
                         suffix: const Icon(
                           Icons.remove_red_eye,
@@ -173,7 +173,7 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                           onTap: () {
                             submitForm();
                           },
-                          height: 50,
+                          height: 60,
                           width: double.infinity,
                           color: AppColors.primaryButton,
                           child: state1 is AuthScreenLoading

@@ -37,4 +37,18 @@ class AuthRemoteRepositoryImpl implements AuthRepository {
       return Left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, String>> verifyEmailOtp(
+      {required String email, required String token}) async {
+    try {
+      final userId = await authRemoteDataSource.verifyEmailOtp(
+        email: email,
+        token: token,
+      );
+      return Right(userId);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
 }

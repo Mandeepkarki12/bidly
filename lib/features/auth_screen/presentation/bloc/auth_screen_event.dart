@@ -24,3 +24,13 @@ final class AuthScreenLoginEvent extends AuthScreenEvent {
     required this.password,
   });
 }
+
+final class AuthScreenVerifyEmailOtpEvent extends AuthScreenEvent {
+  final String email;
+  final String token;
+
+  AuthScreenVerifyEmailOtpEvent({
+    required this.email,
+    required this.token,
+  });
+}

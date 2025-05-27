@@ -22,8 +22,7 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
       case RouteNames.homeScreen:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
-      case RouteNames.otpScreen:
-        return MaterialPageRoute(builder: (_) => const OtpScreen());
+
       default:
         return MaterialPageRoute(builder: (_) {
           return Scaffold(

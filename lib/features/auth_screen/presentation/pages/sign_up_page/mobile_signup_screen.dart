@@ -1,12 +1,14 @@
 import 'package:bidly/core/routes/route_names.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
+import 'package:bidly/core/utils/user_information.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
 import 'package:bidly/core/widgets/custom_footer/custom_mobile_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';
 import 'package:bidly/core/widgets/custom_snackbar.dart';
 import 'package:bidly/core/widgets/custom_textfield.dart';
 import 'package:bidly/features/auth_screen/presentation/bloc/auth_screen_bloc.dart';
+import 'package:bidly/features/auth_screen/presentation/pages/otp_page/mobile_otp_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,7 +74,10 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                   message: 'Signup successful',
                   type: SnackBarType.success,
                 );
-                Navigator.pushReplacementNamed(context, RouteNames.homeScreen);
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) {
+                  return MobileOtpScreen(email: email);
+                }));
               }
             },
             child: Form(

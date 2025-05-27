@@ -4,6 +4,7 @@ import 'package:bidly/features/auth_screen/data/repositories/auth_repository_imp
 import 'package:bidly/features/auth_screen/domain/repositories/auth_repository.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_login.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_signup.dart';
+import 'package:bidly/features/auth_screen/domain/usecases/verify_email_otp.dart';
 import 'package:bidly/features/auth_screen/presentation/bloc/auth_screen_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -32,6 +33,11 @@ void _initAuth() {
 
   stl.registerFactory(() => UserLogin(authRepository: stl<AuthRepository>()));
 
+  stl.registerFactory(
+      () => VerifyEmailOtp(authRepository: stl<AuthRepository>()));
+
   stl.registerLazySingleton(() => AuthScreenBloc(
-      userSignup: stl<UserSignup>(), userLogin: stl<UserLogin>()));
+      userSignup: stl<UserSignup>(),
+      userLogin: stl<UserLogin>(),
+      verifyEmailOtp: stl<VerifyEmailOtp>()));
 }

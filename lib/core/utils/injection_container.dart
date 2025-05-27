@@ -2,6 +2,7 @@ import 'package:bidly/core/secrets/app_secrets.dart';
 import 'package:bidly/features/auth_screen/data/datasources/auth_remote_datasource.dart';
 import 'package:bidly/features/auth_screen/data/repositories/auth_repository_impl.dart';
 import 'package:bidly/features/auth_screen/domain/repositories/auth_repository.dart';
+import 'package:bidly/features/auth_screen/domain/usecases/user_login.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_signup.dart';
 import 'package:bidly/features/auth_screen/presentation/bloc/auth_screen_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -29,6 +30,8 @@ void _initAuth() {
 
   stl.registerFactory(() => UserSignup(authRepository: stl<AuthRepository>()));
 
-  stl.registerLazySingleton(
-      () => AuthScreenBloc(userSignup: stl<UserSignup>()));
+  stl.registerFactory(() => UserLogin(authRepository: stl<AuthRepository>()));
+
+  stl.registerLazySingleton(() => AuthScreenBloc(
+      userSignup: stl<UserSignup>(), userLogin: stl<UserLogin>()));
 }

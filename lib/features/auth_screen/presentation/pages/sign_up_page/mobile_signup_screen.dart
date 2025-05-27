@@ -127,7 +127,7 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                           .baseBodyWorkSans,
                     )),
                 const SizedBox(
-                  height: 15,
+                  height: 5,
                 ),
                 SizedBox(
                     height: 85,
@@ -160,7 +160,7 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                           .baseBodyWorkSans,
                     )),
                 const SizedBox(
-                  height: 15,
+                  height: 5,
                 ),
                 SizedBox(
                     height: 85,
@@ -195,7 +195,7 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                           .baseBodyWorkSans,
                     )),
                 const SizedBox(
-                  height: 15,
+                  height: 5,
                 ),
                 SizedBox(
                     height: 85,

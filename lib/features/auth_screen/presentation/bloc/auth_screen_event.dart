@@ -15,3 +15,12 @@ final class AuthScreenSignupEvent extends AuthScreenEvent {
   });
 }
 
+final class AuthScreenLoginEvent extends AuthScreenEvent {
+  final String email;
+  final String password;
+
+  AuthScreenLoginEvent({
+    required this.email,
+    required this.password,
+  });
+}

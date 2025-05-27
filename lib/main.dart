@@ -14,6 +14,7 @@ void main() async {
       BlocProvider(
         create: (_) => stl<AuthScreenBloc>(),
       ),
+      
     ],
     child: const MyApp(),
   ));

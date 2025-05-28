@@ -28,9 +28,19 @@ final class AuthScreenLoginEvent extends AuthScreenEvent {
 final class AuthScreenVerifyEmailOtpEvent extends AuthScreenEvent {
   final String email;
   final String token;
+  final OtpType type ;
 
   AuthScreenVerifyEmailOtpEvent({
+    required this.type,
     required this.email,
     required this.token,
+  });
+}
+
+final class AuthScreenResetPasswordEvent extends AuthScreenEvent {
+  final String email;
+
+  AuthScreenResetPasswordEvent({
+    required this.email,
   });
 }

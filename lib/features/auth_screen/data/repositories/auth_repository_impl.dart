@@ -3,6 +3,8 @@ import 'package:bidly/core/errors/failure.dart';
 import 'package:bidly/features/auth_screen/data/datasources/auth_remote_datasource.dart';
 import 'package:bidly/features/auth_screen/domain/repositories/auth_repository.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRemoteRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource authRemoteDataSource;
@@ -15,6 +17,7 @@ class AuthRemoteRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
+
       return Right(userId);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
@@ -32,6 +35,7 @@ class AuthRemoteRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
+      debugPrint(userId);
       return Right(userId);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
@@ -40,13 +44,26 @@ class AuthRemoteRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, String>> verifyEmailOtp(
-      {required String email, required String token}) async {
+      {required String email,
+      required String token,
+      required OtpType type}) async {
     try {
       final userId = await authRemoteDataSource.verifyEmailOtp(
+        type: type,
         email: email,
         token: token,
       );
       return Right(userId);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> resetPassword({required String email}) async {
+    try {
+      final message = await authRemoteDataSource.resetPassword(email: email);
+      return Right(message);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
     }

@@ -8,10 +8,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MobileOtpScreen extends StatefulWidget {
   final String email;
+  final OtpType type;
   const MobileOtpScreen({
+    required this.type,
     required this.email,
     Key? key,
   }) : super(key: key);
@@ -84,8 +87,15 @@ class _MobileOtpScreenState extends State<MobileOtpScreen> {
                             message: 'OTP Verification Successful',
                             type: SnackBarType.success,
                           );
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, RouteNames.homeScreen, (route) => false);
+                          if (widget.type == OtpType.signup) {
+                            Navigator.pushNamedAndRemoveUntil(context,
+                                RouteNames.homeScreen, (route) => false);
+                          } else {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                RouteNames.changePasswordScreen,
+                                (route) => false);
+                          }
                         }
                       },
                       child: Column(
@@ -147,8 +157,12 @@ class _MobileOtpScreenState extends State<MobileOtpScreen> {
                                 builder: (context, state2) {
                                   return CustomRoundedButton(
                                     onTap: () {
+                                      print('OTP Code: $otpCode');
+                                      print('Email: ${widget.email}');
+                                      print('Type: ${widget.type}');
                                       context.read<AuthScreenBloc>().add(
                                             AuthScreenVerifyEmailOtpEvent(
+                                              type: widget.type,
                                               email: widget.email,
                                               token: otpCode,
                                             ),

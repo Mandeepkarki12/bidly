@@ -12,6 +12,7 @@ import 'package:bidly/features/auth_screen/presentation/pages/otp_page/mobile_ot
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MobileSignUpScreen extends StatefulWidget {
   const MobileSignUpScreen({
@@ -76,7 +77,7 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                 );
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) {
-                  return MobileOtpScreen(email: email);
+                  return MobileOtpScreen(email: email, type: OtpType.signup);
                 }));
               }
             },

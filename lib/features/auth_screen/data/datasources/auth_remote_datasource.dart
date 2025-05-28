@@ -1,4 +1,5 @@
 import 'package:bidly/core/errors/exception.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract interface class AuthRemoteDataSource {
@@ -14,6 +15,11 @@ abstract interface class AuthRemoteDataSource {
   Future<String> verifyEmailOtp({
     required String email,
     required String token,
+    required OtpType type,
+  });
+
+  Future<String> resetPassword({
+    required String email,
   });
 }
 
@@ -26,7 +32,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String email,
     required String password,
   }) async {
+    debugPrint(
+        '[AuthRemoteDataSource] Starting signUpWithEmailPassword for $email');
     try {
+      debugPrint('[AuthRemoteDataSource] Calling supabaseClient.auth.signUp');
       final response = await supabaseClient.auth.signUp(
         email: email,
         password: password,
@@ -34,6 +43,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           'userName': userName,
         },
       );
+      debugPrint('- User: ${response.user}');
       if (response.user == null) {
         throw const ServerException('User is null');
       }
@@ -66,10 +76,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<String> verifyEmailOtp({
     required String email,
     required String token,
+    required OtpType type,
   }) async {
     try {
       final response = await supabaseClient.auth.verifyOTP(
-        type: OtpType.signup,
+        type: type,
         email: email,
         token: token,
       );
@@ -79,6 +90,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return response.user!.id;
     } catch (e) {
       throw ServerException('OTP verification failed: ${e.toString()}');
+    }
+  }
+
+  @override
+  @override
+  Future<String> resetPassword({required String email}) async {
+    try {
+      await supabaseClient.auth.resetPasswordForEmail(email);
+      return 'Password reset email sent successfully to $email';
+    } catch (e) {
+      throw ServerException('Password reset failed: ${e.toString()}');
     }
   }
 }

@@ -1,6 +1,9 @@
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
+import 'package:bidly/core/widgets/custom_snackbar.dart';
+import 'package:bidly/features/auth_screen/presentation/bloc/auth_screen_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomMobileAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -35,12 +38,27 @@ class _CustomMobileAppBarState extends State<CustomMobileAppBar> {
       ),
       centerTitle: true,
       actions: [
-        IconButton(
-          icon: const Icon(
-            Icons.menu,
-            color: AppColors.primaryText,
+        BlocListener<AuthScreenBloc, AuthScreenState>(
+          listener: (context, state) {
+            if (state is AuthScreenFailure) {
+              showCustomSnackBar(context,
+                  message: state.message, type: SnackBarType.error);
+            }
+
+            if (state is AuthScreenSucess) {
+              showCustomSnackBar(context,
+                  message: state.userId, type: SnackBarType.success);
+            }
+          },
+          child: IconButton(
+            icon: const Icon(
+              Icons.menu,
+              color: AppColors.primaryText,
+            ),
+            onPressed: () {
+              context.read<AuthScreenBloc>().add(AuthScreenSignOutEvent());
+            },
           ),
-          onPressed: () {},
         ),
         SizedBox(width: width * 0.02),
       ],

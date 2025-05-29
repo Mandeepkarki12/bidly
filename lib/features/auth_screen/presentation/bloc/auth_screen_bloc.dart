@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:bidly/features/auth_screen/domain/usecases/change_password.dart';
+import 'package:bidly/features/auth_screen/domain/usecases/logout.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/reset_password.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_login.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_signup.dart';
@@ -14,16 +18,22 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
   final UserLogin _userLogin;
   final VerifyEmailOtp _verifyEmailOtp;
   final ResetPassword _resetPassword;
+  final ChangePassword _changePassword;
+  final LogOut _signOut;
 
   AuthScreenBloc({
     required UserSignup userSignup,
     required UserLogin userLogin,
     required VerifyEmailOtp verifyEmailOtp,
     required ResetPassword resetPassword,
+    required ChangePassword changePassword,
+    required LogOut signOut,
   })  : _userSignup = userSignup,
         _userLogin = userLogin,
         _verifyEmailOtp = verifyEmailOtp,
         _resetPassword = resetPassword,
+        _changePassword = changePassword,
+        _signOut = signOut,
         super(AuthScreenInitial()) {
     // SIGNUP
     on<AuthScreenSignupEvent>((event, emit) async {
@@ -79,5 +89,27 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
         (message) => emit(AuthScreenSucess(userId: message)),
       );
     });
+
+    // cHANGE PASSWORD
+    on<AuthScreenChangePasswordEvent>((event, emit) async {
+      emit(AuthScreenLoading());
+      final response = await _changePassword(
+        ChangePasswordParams(newPassword: event.newPassword),
+      );
+      response.fold(
+        (failure) => emit(AuthScreenFailure(message: failure.message)),
+        (message) => emit(AuthScreenSucess(userId: message)),
+      );
+    });
+
+    // on signout
+    on<AuthScreenSignOutEvent>(
+      (event, emit) async {
+        emit(AuthScreenLoading());
+        final response = await _signOut();
+        response.fold((l) => emit(AuthScreenFailure(message: l.message)),
+            (r) => AuthScreenSucess(userId: r));
+      },
+    );
   }
 }

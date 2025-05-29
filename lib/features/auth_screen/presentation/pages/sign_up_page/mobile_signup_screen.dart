@@ -1,7 +1,6 @@
 import 'package:bidly/core/routes/route_names.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
-import 'package:bidly/core/utils/user_information.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
 import 'package:bidly/core/widgets/custom_footer/custom_mobile_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';

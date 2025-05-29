@@ -68,4 +68,27 @@ class AuthRemoteRepositoryImpl implements AuthRepository {
       return Left(Failure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, String>> changePassword(
+      {required String newPassword}) async {
+    try {
+      final message = await authRemoteDataSource.changePassword(
+        newPassword: newPassword,
+      );
+      return Right(message);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> logOut() async {
+    try {
+      final message = await authRemoteDataSource.logOut();
+      return Right(message);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
 }

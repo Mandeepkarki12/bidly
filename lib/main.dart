@@ -14,7 +14,6 @@ void main() async {
       BlocProvider(
         create: (_) => stl<AuthScreenBloc>(),
       ),
-      
     ],
     child: const MyApp(),
   ));
@@ -31,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           scaffoldBackgroundColor: AppColors.backGroundPrimary,
           useMaterial3: true),
-      initialRoute: RouteNames.signupScreen,
+      initialRoute: RouteNames.authGate,
       onGenerateRoute: Routes.generateRoute,
     );
   }

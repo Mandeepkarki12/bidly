@@ -2,6 +2,8 @@ import 'package:bidly/core/secrets/app_secrets.dart';
 import 'package:bidly/features/auth_screen/data/datasources/auth_remote_datasource.dart';
 import 'package:bidly/features/auth_screen/data/repositories/auth_repository_impl.dart';
 import 'package:bidly/features/auth_screen/domain/repositories/auth_repository.dart';
+import 'package:bidly/features/auth_screen/domain/usecases/change_password.dart';
+import 'package:bidly/features/auth_screen/domain/usecases/logout.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/reset_password.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_login.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_signup.dart';
@@ -40,9 +42,16 @@ void _initAuth() {
   stl.registerFactory(
       () => ResetPassword(authRepository: stl<AuthRepository>()));
 
+  stl.registerFactory(
+      () => ChangePassword(authRepository: stl<AuthRepository>()));
+
+  stl.registerFactory(() => LogOut(authRepository: stl<AuthRepository>()));
+
   stl.registerLazySingleton(() => AuthScreenBloc(
       userSignup: stl<UserSignup>(),
       userLogin: stl<UserLogin>(),
       verifyEmailOtp: stl<VerifyEmailOtp>(),
-      resetPassword: stl<ResetPassword>()));
+      resetPassword: stl<ResetPassword>(),
+      changePassword: stl<ChangePassword>(),
+      signOut: stl<LogOut>()));
 }

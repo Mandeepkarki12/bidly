@@ -21,6 +21,12 @@ abstract interface class AuthRemoteDataSource {
   Future<String> resetPassword({
     required String email,
   });
+
+  Future<String> changePassword({
+    required String newPassword,
+  });
+
+  Future<String> logOut();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -94,13 +100,39 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  @override
   Future<String> resetPassword({required String email}) async {
     try {
       await supabaseClient.auth.resetPasswordForEmail(email);
       return 'Password reset email sent successfully to $email';
     } catch (e) {
       throw ServerException('Password reset failed: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<String> changePassword({required String newPassword}) async {
+    try {
+      final response = await supabaseClient.auth.updateUser(
+        UserAttributes(password: newPassword),
+      );
+
+      if (response.user == null) {
+        throw const ServerException('Failed to update password: User is null');
+      }
+
+      return 'Password updated successfully';
+    } catch (e) {
+      throw ServerException('Change password failed: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<String> logOut() async {
+    try {
+      await supabaseClient.auth.signOut();
+      return 'Logged out successfully';
+    } catch (e) {
+      throw ServerException('Logout failed: ${e.toString()}');
     }
   }
 }

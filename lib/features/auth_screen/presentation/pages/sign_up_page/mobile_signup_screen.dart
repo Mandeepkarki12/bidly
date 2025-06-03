@@ -281,7 +281,8 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, RouteNames.loginScreen);
+                        Navigator.pushReplacementNamed(
+                            context, RouteNames.loginScreen);
                       },
                       child: Text(
                         'Login',

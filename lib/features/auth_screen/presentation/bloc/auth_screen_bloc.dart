@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bidly/features/auth_screen/domain/usecases/change_password.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/logout.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/reset_password.dart';
@@ -108,7 +106,7 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
         emit(AuthScreenLoading());
         final response = await _signOut();
         response.fold((l) => emit(AuthScreenFailure(message: l.message)),
-            (r) => AuthScreenSucess(userId: r));
+            (r) => emit(AuthScreenSucess(userId: r)));
       },
     );
   }

@@ -56,7 +56,7 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
               if (state is AuthScreenSucess) {
                 showCustomSnackBar(
                   context,
-                  message: 'Login Successful',
+                  message: 'Login Successful for ${state.userId}',
                   type: SnackBarType.success,
                 );
                 Navigator.pushNamedAndRemoveUntil(
@@ -195,13 +195,19 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                     children: [
                       Text('Doesn\'t have an account ? ',
                           style: const AppTextStyles().baseBodyWorkSans),
-                      Text('SignUp',
-                          style: const AppTextStyles(
-                                  color: AppColors.primaryButton)
-                              .baseBodyWorkSans
-                              .copyWith(
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: AppColors.primaryButton)),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacementNamed(
+                              context, RouteNames.signupScreen);
+                        },
+                        child: Text('SignUp',
+                            style: const AppTextStyles(
+                                    color: AppColors.primaryButton)
+                                .baseBodyWorkSans
+                                .copyWith(
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: AppColors.primaryButton)),
+                      ),
                     ],
                   ),
                   const SizedBox(

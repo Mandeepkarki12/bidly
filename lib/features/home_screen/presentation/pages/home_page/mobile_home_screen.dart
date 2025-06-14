@@ -153,7 +153,9 @@ class MobileHomeScreen extends StatelessWidget {
                 height: 40,
               ),
               CustomRoundedButton(
-                onTap: () => {},
+                onTap: () => {
+                  context.read<AuthScreenBloc>().add(AuthScreenSignOutEvent())
+                },
                 height: 60,
                 width: double.infinity,
                 color: AppColors.primaryButton,

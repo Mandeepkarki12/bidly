@@ -157,9 +157,6 @@ class _MobileOtpScreenState extends State<MobileOtpScreen> {
                                 builder: (context, state2) {
                                   return CustomRoundedButton(
                                     onTap: () {
-                                      print('OTP Code: $otpCode');
-                                      print('Email: ${widget.email}');
-                                      print('Type: ${widget.type}');
                                       context.read<AuthScreenBloc>().add(
                                             AuthScreenVerifyEmailOtpEvent(
                                               type: widget.type,

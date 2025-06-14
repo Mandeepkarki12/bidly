@@ -44,7 +44,7 @@ class _CustomMobileAppBarState extends State<CustomMobileAppBar> {
             color: AppColors.primaryText,
           ),
           onPressed: () {
-            context.read<AuthScreenBloc>().add(AuthScreenSignOutEvent());
+           
           },
         ),
         SizedBox(width: width * 0.02),

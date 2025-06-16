@@ -3,3 +3,13 @@ class ServerException implements Exception {
 
   const ServerException(this.message);
 }
+
+class NetworkException implements Exception {
+  final String message;
+  const NetworkException(this.message);
+}
+
+class DataParsingException implements Exception {
+  final String message;
+  const DataParsingException(this.message);
+}

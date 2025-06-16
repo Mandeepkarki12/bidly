@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:bidly/core/errors/exception.dart';
+import 'package:bidly/core/utils/app_apis.dart';
+import 'package:bidly/features/auth_screen/data/models/user_register_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -24,6 +29,12 @@ abstract interface class AuthRemoteDataSource {
 
   Future<String> changePassword({
     required String newPassword,
+  });
+
+  Future<UserRegisterModel> saveTodb({
+    required String userId,
+    required String userName,
+    required String email,
   });
 
   Future<String> logOut();
@@ -133,6 +144,51 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return 'Logged out successfully';
     } catch (e) {
       throw ServerException('Logout failed: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<UserRegisterModel> saveTodb(
+      {required String userId,
+      required String userName,
+      required String email}) async {
+    final AppApis api = AppApis();
+
+    try {
+      final response = await api.sendRequest.post(
+        AppApi.authApis.register,
+        data: {
+          'user_id': userId,
+          'user_name': userName,
+          'user_email': email,
+        },
+      );
+
+      if (response.statusCode == null) {
+        throw const ServerException('No status code received');
+      }
+
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        return UserRegisterModel.fromJson(response.data);
+      } else if (response.statusCode! >= 400 && response.statusCode! < 500) {
+        final errorMessage = response.data is Map
+            ? response.data['message']?.toString()
+            : 'Client error occurred';
+        throw ServerException(errorMessage ?? 'Client error occurred');
+      } else {
+        throw ServerException('Server error occurred: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      final errorMessage = e.response?.data is Map
+          ? e.response?.data['message']?.toString()
+          : 'Network error occurred';
+      throw ServerException(errorMessage ?? 'Network error occurred');
+    } on SocketException {
+      throw const NetworkException('No Internet Connection');
+    } on FormatException {
+      throw const DataParsingException('Bad response format');
+    } on Exception catch (e) {
+      throw ServerException(e.toString());
     }
   }
 }

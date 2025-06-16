@@ -1,6 +1,8 @@
 import 'package:bidly/core/errors/exception.dart';
 import 'package:bidly/core/errors/failure.dart';
+import 'package:bidly/core/utils/type_of.dart';
 import 'package:bidly/features/auth_screen/data/datasources/auth_remote_datasource.dart';
+import 'package:bidly/features/auth_screen/data/models/user_register_model.dart';
 import 'package:bidly/features/auth_screen/domain/repositories/auth_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
@@ -87,6 +89,20 @@ class AuthRemoteRepositoryImpl implements AuthRepository {
     try {
       final message = await authRemoteDataSource.logOut();
       return Right(message);
+    } on ServerException catch (e) {
+      return Left(Failure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserRegisterModel>> saveTodb(
+      {required String userId,
+      required String userName,
+      required String userEmail}) async {
+    try {
+      final result = await authRemoteDataSource.saveTodb(
+          userId: userId, userName: userName, email: userEmail);
+      return Right(result);
     } on ServerException catch (e) {
       return Left(Failure(e.message));
     }

@@ -193,6 +193,7 @@ class _MobileOtpScreenState extends State<MobileOtpScreen> {
                               CustomRoundedButton(
                                 onTap: () {
                                   // Resend action
+                                  
                                 },
                                 height: 60,
                                 width: double.infinity,

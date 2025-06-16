@@ -13,6 +13,12 @@ final class AuthScreenSucess extends AuthScreenState {
   AuthScreenSucess({required this.userId});
 }
 
+final class AuthScreenSavetodbSucess extends AuthScreenState {
+  final UserRegisterModel userRegisterModel;
+
+  AuthScreenSavetodbSucess({required this.userRegisterModel});
+}
+
 final class AuthScreenFailure extends AuthScreenState {
   final String message;
 

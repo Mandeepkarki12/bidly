@@ -15,6 +15,8 @@ final class AuthScreenSignupEvent extends AuthScreenEvent {
   });
 }
 
+
+
 final class AuthScreenLoginEvent extends AuthScreenEvent {
   final String email;
   final String password;
@@ -54,3 +56,15 @@ final class AuthScreenChangePasswordEvent extends AuthScreenEvent {
 }
 
 final class AuthScreenSignOutEvent extends AuthScreenEvent{}
+
+final class AuthSaveTodbEvent extends AuthScreenEvent{
+  final String userId;
+  final String userName;
+  final String userEmail;
+
+  AuthSaveTodbEvent({
+    required this.userId,
+    required this.userName,
+    required this.userEmail,
+  });
+}

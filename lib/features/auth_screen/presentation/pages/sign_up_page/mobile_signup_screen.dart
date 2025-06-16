@@ -27,6 +27,8 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
   String email = '';
   String password = '';
   String confirmPassword = '';
+  String userId = '';
+
   final _formKey = GlobalKey<FormState>();
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
@@ -69,6 +71,10 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                   type: SnackBarType.error,
                 );
               } else if (state is AuthScreenSucess) {
+                userId = state.userId;
+                // saving the user information into database my sql
+                context.read<AuthScreenBloc>().add(AuthSaveTodbEvent(
+                    userId: userId, userName: username, userEmail: email));
                 showCustomSnackBar(
                   context,
                   message: 'Signup successful',

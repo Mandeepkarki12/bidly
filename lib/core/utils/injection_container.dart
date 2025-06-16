@@ -5,6 +5,7 @@ import 'package:bidly/features/auth_screen/domain/repositories/auth_repository.d
 import 'package:bidly/features/auth_screen/domain/usecases/change_password.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/logout.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/reset_password.dart';
+import 'package:bidly/features/auth_screen/domain/usecases/save_to_db.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_login.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_signup.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/verify_email_otp.dart';
@@ -47,7 +48,10 @@ void _initAuth() {
 
   stl.registerFactory(() => LogOut(authRepository: stl<AuthRepository>()));
 
+  stl.registerFactory(() => SaveToDb(authRepository: stl<AuthRepository>()));
+
   stl.registerLazySingleton(() => AuthScreenBloc(
+      saveToDb: stl<SaveToDb>(),
       userSignup: stl<UserSignup>(),
       userLogin: stl<UserLogin>(),
       verifyEmailOtp: stl<VerifyEmailOtp>(),

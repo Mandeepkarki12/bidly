@@ -61,10 +61,12 @@ final class AuthSaveTodbEvent extends AuthScreenEvent{
   final String userId;
   final String userName;
   final String userEmail;
+ 
 
   AuthSaveTodbEvent({
     required this.userId,
     required this.userName,
     required this.userEmail,
+  
   });
 }

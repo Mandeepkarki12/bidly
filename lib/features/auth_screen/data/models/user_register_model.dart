@@ -27,10 +27,13 @@ class UserRegisterDataModel extends UserDataEntity {
     String? userId,
     String? userName,
     String? userEmail,
+    bool? userVerified,
   }) : super(
           userId: userId,
           userName: userName,
           userEmail: userEmail,
+          userVerified: userVerified 
+          
         );
 
   factory UserRegisterDataModel.fromJson(Map<String, dynamic> json) {
@@ -38,6 +41,7 @@ class UserRegisterDataModel extends UserDataEntity {
       userId: json['user_id'],
       userName: json['user_name'],
       userEmail: json['user_email'],
+      userVerified: json['user_verified']
     );
   }
 }

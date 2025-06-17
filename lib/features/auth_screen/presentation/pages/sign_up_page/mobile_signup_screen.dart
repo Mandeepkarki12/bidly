@@ -74,7 +74,7 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                 userId = state.userId;
                 // saving the user information into database my sql
                 context.read<AuthScreenBloc>().add(AuthSaveTodbEvent(
-                    userId: userId, userName: username, userEmail: email));
+                    userId: userId, userName: username, userEmail: email, ));
                 showCustomSnackBar(
                   context,
                   message: 'Signup successful',

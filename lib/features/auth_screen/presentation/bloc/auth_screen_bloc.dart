@@ -1,4 +1,6 @@
+import 'package:bidly/core/services/shared_prefrences.dart';
 import 'package:bidly/features/auth_screen/data/models/user_register_model.dart';
+import 'package:bidly/features/auth_screen/data/models/user_verify_model.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/change_password.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/logout.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/reset_password.dart';
@@ -6,14 +8,15 @@ import 'package:bidly/features/auth_screen/domain/usecases/save_to_db.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_login.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/user_signup.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/verify_email_otp.dart';
+import 'package:bidly/features/auth_screen/domain/usecases/verify_user_usecase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 part 'auth_screen_event.dart';
 part 'auth_screen_state.dart';
 
 class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
+  final SecureStorageService _storageService;
   final UserSignup _userSignup;
   final UserLogin _userLogin;
   final VerifyEmailOtp _verifyEmailOtp;
@@ -21,6 +24,7 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
   final ChangePassword _changePassword;
   final LogOut _signOut;
   final SaveToDb _saveToDb;
+  final VerifyUserUsecase _verifyUserUsecase;
 
   AuthScreenBloc(
       {required UserSignup userSignup,
@@ -29,7 +33,9 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
       required ResetPassword resetPassword,
       required ChangePassword changePassword,
       required LogOut signOut,
-      required SaveToDb saveToDb})
+      required SaveToDb saveToDb,
+      required VerifyUserUsecase verifyUserUsecase,
+      required SecureStorageService secureStorageService})
       : _userSignup = userSignup,
         _userLogin = userLogin,
         _verifyEmailOtp = verifyEmailOtp,
@@ -37,6 +43,8 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
         _changePassword = changePassword,
         _signOut = signOut,
         _saveToDb = saveToDb,
+        _verifyUserUsecase = verifyUserUsecase,
+        _storageService = secureStorageService,
         super(AuthScreenInitial()) {
     // SIGNUP
     on<AuthScreenSignupEvent>((event, emit) async {
@@ -63,7 +71,9 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
       debugPrint(event.password);
       response.fold(
         (failure) => emit(AuthScreenFailure(message: failure.message)),
-        (userId) => emit(AuthScreenSucess(userId: userId)),
+        (userId) {
+          emit(AuthScreenSucess(userId: userId));
+        },
       );
     });
 
@@ -110,21 +120,41 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
       (event, emit) async {
         emit(AuthScreenLoading());
         final response = await _signOut();
-        response.fold((l) => emit(AuthScreenFailure(message: l.message)),
-            (r) => emit(AuthScreenSucess(userId: r)));
+        response.fold((l) => emit(AuthScreenFailure(message: l.message)), (r) {
+          emit(AuthScreenSucess(userId: r));
+        });
       },
     );
 
+    // on save to db
     on<AuthSaveTodbEvent>((event, emit) async {
       emit(AuthScreenLoading());
-      final response = await _saveToDb(
-        DbParameters(
-            userId: event.userId,
-            userName: event.userName,
-            email: event.userEmail),
-      );
-      response.fold((l) => emit(AuthScreenFailure(message: l.message)),
-          (r) => emit(AuthScreenSavetodbSucess(userRegisterModel: r)));
+      try {
+        final response = await _saveToDb(
+          DbParameters(
+              userId: event.userId,
+              userName: event.userName,
+              email: event.userEmail),
+        );
+        response.fold((l) => emit(AuthScreenFailure(message: l.message)), (r) {
+          emit(AuthScreenSavetodbSucess(userRegisterModel: r));
+        });
+      } catch (e) {
+        emit(AuthScreenFailure(message: e.toString()));
+      }
+    });
+    // on verify
+    on<AuthVerifyUserEvent>((event, emit) async {
+      emit(AuthScreenLoading());
+      try {
+        final response =
+            await _verifyUserUsecase(VerifyParameter(userId: event.userId));
+        response.fold((l) => emit(AuthScreenFailure(message: l.message)), (r) {
+          emit(AuthScreenVerifySucess(userVerifyModel: r));
+        });
+      } catch (e) {
+        emit(AuthScreenFailure(message: e.toString()));
+      }
     });
   }
 }

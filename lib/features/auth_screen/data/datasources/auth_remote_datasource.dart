@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bidly/core/errors/exception.dart';
 import 'package:bidly/core/utils/app_apis.dart';
 import 'package:bidly/features/auth_screen/data/models/user_register_model.dart';
+import 'package:bidly/features/auth_screen/data/models/user_verify_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -37,10 +38,13 @@ abstract interface class AuthRemoteDataSource {
     required String email,
   });
 
+  Future<UserVerifyModel> verifyUser({required String userId});
+
   Future<String> logOut();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+  final AppApis api = AppApis();
   final SupabaseClient supabaseClient;
   AuthRemoteDataSourceImpl({required this.supabaseClient});
   @override
@@ -152,8 +156,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       {required String userId,
       required String userName,
       required String email}) async {
-    final AppApis api = AppApis();
-
     try {
       final response = await api.sendRequest.post(
         AppApi.authApis.register,
@@ -169,7 +171,46 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        print(response.data);
         return UserRegisterModel.fromJson(response.data);
+      } else if (response.statusCode! >= 400 && response.statusCode! < 500) {
+        final errorMessage = response.data is Map
+            ? response.data['message']?.toString()
+            : 'Client error occurred';
+        throw ServerException(errorMessage ?? 'Client error occurred');
+      } else {
+        throw ServerException('Server error occurred: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      final errorMessage = e.response?.data is Map
+          ? e.response?.data['message']?.toString()
+          : 'Network error occurred';
+      throw ServerException(errorMessage ?? 'Network error occurred');
+    } on SocketException {
+      throw const NetworkException('No Internet Connection');
+    } on FormatException {
+      throw const DataParsingException('Bad response format');
+    } on Exception catch (e) {
+      throw ServerException(e.toString());
+    }
+  }
+
+  @override
+  Future<UserVerifyModel> verifyUser({required String userId}) async {
+    try {
+      final response = await api.sendRequest.put(
+        AppApi.authApis.verified,
+        data: {
+          'user_id': userId,
+        },
+      );
+      if (response.statusCode == null) {
+        throw const ServerException('No status code received');
+      }
+
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        print(response.data);
+        return UserVerifyModel.fromJson(response.data);
       } else if (response.statusCode! >= 400 && response.statusCode! < 500) {
         final errorMessage = response.data is Map
             ? response.data['message']?.toString()

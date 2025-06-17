@@ -19,6 +19,12 @@ final class AuthScreenSavetodbSucess extends AuthScreenState {
   AuthScreenSavetodbSucess({required this.userRegisterModel});
 }
 
+final class AuthScreenVerifySucess extends AuthScreenState {
+  final UserVerifyModel userVerifyModel;
+
+  AuthScreenVerifySucess({required this.userVerifyModel});
+}
+
 final class AuthScreenFailure extends AuthScreenState {
   final String message;
 

@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-// String baseUrl = 'http://192.168.1.77/bidly/api/'; // mandeep api base url
+String baseUrl = 'http://192.168.1.77/bidly/api/'; // mandeep api base url
 
-String baseUrl = "http://192.168.45.230/bidly_backend-main/api/"; // niraj 
+// String baseUrl = "http://192.168.45.230/bidly_backend-main/api/"; // niraj
 
 class AppApis {
   final Dio _dio = Dio();
@@ -29,4 +29,5 @@ class AppApi {
 class AuthApis {
   AuthApis();
   String get register => "$appApisBaseURL/register_user.php";
+  String get verified => "$appApisBaseURL/verified.php";
 }

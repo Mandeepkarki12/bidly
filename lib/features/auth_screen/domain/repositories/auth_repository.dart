@@ -1,5 +1,6 @@
 import 'package:bidly/core/errors/failure.dart';
 import 'package:bidly/features/auth_screen/data/models/user_register_model.dart';
+import 'package:bidly/features/auth_screen/data/models/user_verify_model.dart';
 import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -31,8 +32,10 @@ abstract interface class AuthRepository {
   Future<Either<Failure, String>> logOut();
 
   Future<Either<Failure, UserRegisterModel>> saveTodb({
-    required String userId ,
+    required String userId,
     required String userName,
-    required String  userEmail,
+    required String userEmail,
   });
+
+  Future<Either<Failure, UserVerifyModel>> verifyUser({required String userId});
 }

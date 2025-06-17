@@ -1,4 +1,5 @@
 import 'package:bidly/core/routes/route_names.dart';
+import 'package:bidly/core/services/shared_prefrences.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
@@ -19,9 +20,11 @@ class MobileLoginScreen extends StatefulWidget {
 }
 
 class _MobileLoginScreenState extends State<MobileLoginScreen> {
+  final SecureStorageService secureStorageService = SecureStorageService();
   String email = '';
   String password = '';
   final _formKey = GlobalKey<FormState>();
+  String userID = '';
   void submitForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -54,6 +57,10 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                 );
               }
               if (state is AuthScreenSucess) {
+                print('User ID after loggin in : ${state.userId}');
+                // saving user id after logging in to shared preferences
+                userID = state.userId;
+                secureStorageService.setValue(key: 'userId', value: userID);
                 showCustomSnackBar(
                   context,
                   message: 'Login Successful for ${state.userId}',

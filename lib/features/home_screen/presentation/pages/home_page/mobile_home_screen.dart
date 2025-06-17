@@ -1,4 +1,5 @@
 import 'package:bidly/core/routes/route_names.dart';
+import 'package:bidly/core/services/shared_prefrences.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
@@ -15,8 +16,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:octo_image/octo_image.dart';
 
-class MobileHomeScreen extends StatelessWidget {
+class MobileHomeScreen extends StatefulWidget {
   const MobileHomeScreen({super.key});
+
+  @override
+  State<MobileHomeScreen> createState() => _MobileHomeScreenState();
+}
+
+class _MobileHomeScreenState extends State<MobileHomeScreen> {
+  final SecureStorageService secureStorageService = SecureStorageService();
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -154,6 +162,8 @@ class MobileHomeScreen extends StatelessWidget {
               ),
               CustomRoundedButton(
                 onTap: () => {
+                  // deleting the userid from shared preferences
+                  secureStorageService.delete(key: 'userId'),
                   context.read<AuthScreenBloc>().add(AuthScreenSignOutEvent())
                 },
                 height: 60,

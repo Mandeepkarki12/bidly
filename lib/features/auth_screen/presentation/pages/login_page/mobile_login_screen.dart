@@ -20,7 +20,6 @@ class MobileLoginScreen extends StatefulWidget {
 }
 
 class _MobileLoginScreenState extends State<MobileLoginScreen> {
-  final SecureStorageService secureStorageService = SecureStorageService();
   String email = '';
   String password = '';
   final _formKey = GlobalKey<FormState>();
@@ -59,8 +58,7 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
               if (state is AuthScreenSucess) {
                 print('User ID after loggin in : ${state.userId}');
                 // saving user id after logging in to shared preferences
-                userID = state.userId;
-                secureStorageService.setValue(key: 'userId', value: userID);
+
                 showCustomSnackBar(
                   context,
                   message: 'Login Successful for ${state.userId}',

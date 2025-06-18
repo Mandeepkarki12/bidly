@@ -16,7 +16,6 @@ part 'auth_screen_event.dart';
 part 'auth_screen_state.dart';
 
 class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
-  final SecureStorageService _storageService;
   final UserSignup _userSignup;
   final UserLogin _userLogin;
   final VerifyEmailOtp _verifyEmailOtp;
@@ -26,17 +25,16 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
   final SaveToDb _saveToDb;
   final VerifyUserUsecase _verifyUserUsecase;
 
-  AuthScreenBloc(
-      {required UserSignup userSignup,
-      required UserLogin userLogin,
-      required VerifyEmailOtp verifyEmailOtp,
-      required ResetPassword resetPassword,
-      required ChangePassword changePassword,
-      required LogOut signOut,
-      required SaveToDb saveToDb,
-      required VerifyUserUsecase verifyUserUsecase,
-      required SecureStorageService secureStorageService})
-      : _userSignup = userSignup,
+  AuthScreenBloc({
+    required UserSignup userSignup,
+    required UserLogin userLogin,
+    required VerifyEmailOtp verifyEmailOtp,
+    required ResetPassword resetPassword,
+    required ChangePassword changePassword,
+    required LogOut signOut,
+    required SaveToDb saveToDb,
+    required VerifyUserUsecase verifyUserUsecase,
+  })  : _userSignup = userSignup,
         _userLogin = userLogin,
         _verifyEmailOtp = verifyEmailOtp,
         _resetPassword = resetPassword,
@@ -44,7 +42,6 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
         _signOut = signOut,
         _saveToDb = saveToDb,
         _verifyUserUsecase = verifyUserUsecase,
-        _storageService = secureStorageService,
         super(AuthScreenInitial()) {
     // SIGNUP
     on<AuthScreenSignupEvent>((event, emit) async {

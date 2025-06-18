@@ -29,6 +29,7 @@ Future<void> initDependencies() async {
 void _initAuth() {
   stl.registerFactory<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(
         supabaseClient: stl<SupabaseClient>(),
+        secureStorageService: stl<SecureStorageService>(),
       ));
 
   stl.registerFactory<AuthRepository>(() => AuthRemoteRepositoryImpl(
@@ -58,7 +59,6 @@ void _initAuth() {
   stl.registerFactory(() => SecureStorageService());
 
   stl.registerLazySingleton(() => AuthScreenBloc(
-      secureStorageService: stl<SecureStorageService>(),
       verifyUserUsecase: stl<VerifyUserUsecase>(),
       saveToDb: stl<SaveToDb>(),
       userSignup: stl<UserSignup>(),

@@ -100,9 +100,7 @@ class _MobileOtpScreenState extends State<MobileOtpScreen> {
                             context
                                 .read<AuthScreenBloc>()
                                 .add(AuthVerifyUserEvent(userId: state.userId));
-                            // saving the user id to the shared preferences
-                            storage.setValue(
-                                key: 'userId', value: state.userId);
+
                             Navigator.pushNamedAndRemoveUntil(context,
                                 RouteNames.homeScreen, (route) => false);
                           } else {

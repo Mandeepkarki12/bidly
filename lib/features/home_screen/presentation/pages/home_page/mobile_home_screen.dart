@@ -163,7 +163,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
               CustomRoundedButton(
                 onTap: () => {
                   // deleting the userid from shared preferences
-                  secureStorageService.delete(key: 'userId'),
+
                   context.read<AuthScreenBloc>().add(AuthScreenSignOutEvent())
                 },
                 height: 60,

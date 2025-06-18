@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bidly/core/errors/exception.dart';
+import 'package:bidly/core/services/shared_prefrences.dart';
 import 'package:bidly/core/utils/app_apis.dart';
 import 'package:bidly/features/auth_screen/data/models/user_register_model.dart';
 import 'package:bidly/features/auth_screen/data/models/user_verify_model.dart';
@@ -46,7 +47,9 @@ abstract interface class AuthRemoteDataSource {
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final AppApis api = AppApis();
   final SupabaseClient supabaseClient;
-  AuthRemoteDataSourceImpl({required this.supabaseClient});
+  final SecureStorageService secureStorageService;
+  AuthRemoteDataSourceImpl(
+      {required this.supabaseClient, required this.secureStorageService});
   @override
   Future<String> signUpWithEmailPassword({
     required String userName,
@@ -84,6 +87,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email: email,
         password: password,
       );
+      secureStorageService.setValue(key: 'userId', value: response.user!.id);
+
       if (response.user == null) {
         throw const ServerException('User is null');
       }
@@ -105,6 +110,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         email: email,
         token: token,
       );
+      if (type == OtpType.signup) {
+        secureStorageService.setValue(key: 'userId', value: response.user!.id);
+      } else {
+        secureStorageService.delete(key: 'userId');
+      }
       if (response.user == null) {
         throw const ServerException('OTP verification failed: User is null');
       }
@@ -145,6 +155,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<String> logOut() async {
     try {
       await supabaseClient.auth.signOut();
+      secureStorageService.delete(key: 'userId');
       return 'Logged out successfully';
     } catch (e) {
       throw ServerException('Logout failed: ${e.toString()}');

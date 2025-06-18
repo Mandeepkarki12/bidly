@@ -54,7 +54,6 @@ class _MobileForgotPasswordScreenState
                   return MobileOtpScreen(
                     type: OtpType.recovery,
                     email: email,
-
                   );
                 }));
               }

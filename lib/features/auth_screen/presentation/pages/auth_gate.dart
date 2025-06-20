@@ -23,7 +23,7 @@ class _AuthGateState extends State<AuthGate> {
 
   Future<void> _checkAuthStatus() async {
     // Check if user_id exists in SharedPreferences
-    final userId = await _storageService.getValue(key: 'user_id');
+    final userId = await _storageService.getValue(key: 'userId');
     setState(() {
       _isLoggedIn = userId != null && userId.isNotEmpty;
       _isLoading = false;

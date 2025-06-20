@@ -13,3 +13,8 @@ class DataParsingException implements Exception {
   final String message;
   const DataParsingException(this.message);
 }
+
+class ClientException implements Exception {
+  final String message;
+  const ClientException(this.message);
+}

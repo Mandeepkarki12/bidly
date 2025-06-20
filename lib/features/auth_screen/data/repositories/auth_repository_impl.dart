@@ -1,6 +1,5 @@
 import 'package:bidly/core/errors/exception.dart';
 import 'package:bidly/core/errors/failure.dart';
-import 'package:bidly/core/utils/type_of.dart';
 import 'package:bidly/features/auth_screen/data/datasources/auth_remote_datasource.dart';
 import 'package:bidly/features/auth_screen/data/models/user_register_model.dart';
 import 'package:bidly/features/auth_screen/data/models/user_verify_model.dart';

@@ -305,7 +305,9 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
                 height: 40,
               ),
               CustomRoundedButton(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteNames.profileScreen);
+                  },
                   height: 60,
                   width: width,
                   shouldFill: false,

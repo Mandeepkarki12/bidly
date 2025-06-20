@@ -1,4 +1,3 @@
-import 'package:bidly/core/services/shared_prefrences.dart';
 import 'package:bidly/features/auth_screen/data/models/user_register_model.dart';
 import 'package:bidly/features/auth_screen/data/models/user_verify_model.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/change_password.dart';

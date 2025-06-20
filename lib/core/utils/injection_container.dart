@@ -12,6 +12,11 @@ import 'package:bidly/features/auth_screen/domain/usecases/user_signup.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/verify_email_otp.dart';
 import 'package:bidly/features/auth_screen/domain/usecases/verify_user_usecase.dart';
 import 'package:bidly/features/auth_screen/presentation/bloc/auth_screen_bloc.dart';
+import 'package:bidly/features/profile_screen/data/datasources/profile_datasource.dart';
+import 'package:bidly/features/profile_screen/data/repositories/profile_repositories_impl.dart';
+import 'package:bidly/features/profile_screen/domain/repositories/profile_repositories.dart';
+import 'package:bidly/features/profile_screen/domain/usecases/get_user_detail_usecase.dart';
+import 'package:bidly/features/profile_screen/presentation/bloc/profile_screen_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -19,6 +24,7 @@ final stl = GetIt.instance;
 
 Future<void> initDependencies() async {
   _initAuth();
+  _initProfile();
   final supabase = await Supabase.initialize(
     url: AppSecrets.supabaseUrl,
     anonKey: AppSecrets.supabaseAnonKey,
@@ -67,4 +73,17 @@ void _initAuth() {
       resetPassword: stl<ResetPassword>(),
       changePassword: stl<ChangePassword>(),
       signOut: stl<LogOut>()));
+}
+
+void _initProfile() {
+  stl.registerFactory<ProfileDataSource>(() => ProfileDataSourceImpl());
+
+  stl.registerFactory<ProfileRepositories>(() =>
+      ProfileRepositoriesImpl(profileDataSource: stl<ProfileDataSource>()));
+
+  stl.registerFactory(() => GetUserDetailUsecase(
+        profileRepositories: stl<ProfileRepositories>(),
+      ));
+  stl.registerLazySingleton(() =>
+      ProfileScreenBloc(getUserDetailUsecase: stl<GetUserDetailUsecase>()));
 }

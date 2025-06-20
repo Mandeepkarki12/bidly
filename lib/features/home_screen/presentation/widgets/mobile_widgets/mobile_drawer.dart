@@ -24,16 +24,19 @@ class _MobileDrawerState extends State<MobileDrawer> {
   bool hasFetchedUser = false;
 
   @override
-  void initState() {
-    super.initState();
-    _loadUserId();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadUserId(); // Refresh every time drawer is opened
   }
 
   Future<void> _loadUserId() async {
     final userId = await _storageService.getValue(key: 'userId');
-    setState(() {
-      _userId = userId;
-    });
+    if (_userId != userId) {
+      setState(() {
+        _userId = userId;
+        hasFetchedUser = false; // Reset fetch trigger
+      });
+    }
   }
 
   @override
@@ -52,9 +55,7 @@ class _MobileDrawerState extends State<MobileDrawer> {
               children: [
                 SizedBox(height: height * 0.07),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(context),
                   child: Container(
                     padding: EdgeInsets.all(width * 0.006),
                     margin: EdgeInsets.only(right: width * 0.55, top: 10),
@@ -62,17 +63,15 @@ class _MobileDrawerState extends State<MobileDrawer> {
                       shape: BoxShape.circle,
                       color: AppColors.backGroundPrimary,
                     ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.close,
-                        size: 30,
-                        color: AppColors.primaryText,
-                      ),
+                    child: const Icon(
+                      Icons.close,
+                      size: 30,
+                      color: AppColors.primaryText,
                     ),
                   ),
                 ),
 
-                /// ✅ Show loading indicator until userId is loaded
+                /// Show loading indicator if userId is not loaded yet
                 if (_userId == null || _userId!.isEmpty)
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 30),
@@ -81,7 +80,7 @@ class _MobileDrawerState extends State<MobileDrawer> {
                 else
                   BlocBuilder<ProfileScreenBloc, ProfileScreenState>(
                     builder: (context, state) {
-                      if (state is ProfileScreenInitial && !hasFetchedUser) {
+                      if (!hasFetchedUser) {
                         hasFetchedUser = true;
                         context.read<ProfileScreenBloc>().add(
                               GetUserDetailEvent(userId: _userId!),
@@ -108,6 +107,7 @@ class _MobileDrawerState extends State<MobileDrawer> {
                       }
 
                       if (state is ProfileScreenSuccess) {
+                        final user = state.userDetailEntity.data!;
                         return GestureDetector(
                           onTap: () => Navigator.pushNamed(
                               context, RouteNames.profileScreen),
@@ -119,32 +119,28 @@ class _MobileDrawerState extends State<MobileDrawer> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(360),
                                   child: OctoImage(
-                                    image: const NetworkImage(
-                                      'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg',
+                                    image: NetworkImage(
+                                      user.profileImage ??
+                                          'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg',
                                     ),
                                     fit: BoxFit.cover,
-                                    placeholderBuilder: (context) =>
+                                    placeholderBuilder: (_) =>
                                         const CupertinoActivityIndicator(),
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            const Center(
-                                      child: Icon(
-                                        Icons.error_outline_outlined,
+                                    errorBuilder: (_, __, ___) => const Icon(
+                                        Icons.error_outline,
                                         color: Colors.red,
-                                        size: 24,
-                                      ),
-                                    ),
+                                        size: 24),
                                   ),
                                 ),
                               ),
                               SizedBox(height: height * 0.008),
                               Text(
-                                state.userDetailEntity.data!.userName,
+                                user.userName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const AppTextStyles(
-                                        color: AppColors.primaryText)
-                                    .h5SpaceMono,
+                                  color: AppColors.primaryText,
+                                ).h5SpaceMono,
                               ),
                               SizedBox(height: height * 0.001),
                               Divider(
@@ -166,7 +162,7 @@ class _MobileDrawerState extends State<MobileDrawer> {
               ],
             ),
 
-            /// ✅ Logout button with listener
+            /// Logout button with listener
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
               child: BlocListener<AuthScreenBloc, AuthScreenState>(
@@ -212,7 +208,7 @@ class _MobileDrawerState extends State<MobileDrawer> {
                   },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

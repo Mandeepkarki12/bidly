@@ -38,7 +38,12 @@ class _MobileProfileScreenState extends State<MobileProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomMobileAppBar(),
+      appBar:  CustomMobileAppBar(
+        onMenuTap: () {
+          // Handle menu tap if needed
+        },
+       
+      ),
       body: BlocBuilder<ProfileScreenBloc, ProfileScreenState>(
         builder: (context, state) {
           if (state is ProfileScreenInitial) {

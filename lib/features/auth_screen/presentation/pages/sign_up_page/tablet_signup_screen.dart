@@ -14,7 +14,11 @@ class TabletSignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: const CustomMobileAppBar(),
+        appBar:  CustomMobileAppBar(
+          onMenuTap: () {
+            // Handle menu tap if needed
+          },
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [

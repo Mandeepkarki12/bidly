@@ -14,7 +14,11 @@ class TabletProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomMobileAppBar(),
+      appBar: CustomMobileAppBar(
+        onMenuTap: () {
+          // Handle menu tap
+        },
+      ),
       body: SingleChildScrollView(
           child: Column(
         children: [

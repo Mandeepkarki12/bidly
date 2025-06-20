@@ -58,7 +58,11 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomMobileAppBar(),
+      appBar:  CustomMobileAppBar(
+        onMenuTap: () {
+          // Handle menu tap if needed
+        },
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

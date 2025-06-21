@@ -7,7 +7,9 @@ import 'package:flutter_svg/svg.dart';
 
 class CustomMobileAppBar extends StatefulWidget implements PreferredSizeWidget {
   final VoidCallback onMenuTap;
-  const CustomMobileAppBar({super.key, required this.onMenuTap});
+  final bool isMenu;
+  const CustomMobileAppBar(
+      {super.key, required this.onMenuTap, this.isMenu = true});
 
   @override
   State<CustomMobileAppBar> createState() => _CustomMobileAppBarState();
@@ -38,15 +40,17 @@ class _CustomMobileAppBarState extends State<CustomMobileAppBar> {
       ),
       centerTitle: true,
       actions: [
-        IconButton(
-          icon: const Icon(
-            Icons.menu,
-            color: AppColors.primaryText,
-          ),
-          onPressed: () {
-            widget.onMenuTap();
-          },
-        ),
+        widget.isMenu
+            ? IconButton(
+                icon: const Icon(
+                  Icons.menu,
+                  color: AppColors.primaryText,
+                ),
+                onPressed: () {
+                  widget.onMenuTap();
+                },
+              )
+            : const SizedBox(),
         SizedBox(width: width * 0.02),
       ],
     );

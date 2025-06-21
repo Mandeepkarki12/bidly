@@ -1,4 +1,3 @@
-import 'package:bidly/core/routes/route_names.dart';
 import 'package:bidly/core/services/shared_prefrences.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';

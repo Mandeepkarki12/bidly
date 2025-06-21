@@ -1,22 +1,46 @@
-import 'package:bidly/core/routes/route_names.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
 import 'package:bidly/core/widgets/custom_footer/custom_tablet_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';
+import 'package:bidly/core/widgets/custom_snackbar.dart';
 import 'package:bidly/core/widgets/custom_textfield.dart';
-import 'package:flutter/material.dart';
+import 'package:bidly/features/auth_screen/presentation/bloc/auth_screen_bloc.dart';
+import 'package:bidly/features/auth_screen/presentation/pages/otp_page/mobile_otp_screen.dart';
 
-class TabletForgotPasswordScreen extends StatelessWidget {
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class TabletForgotPasswordScreen extends StatefulWidget {
   const TabletForgotPasswordScreen({super.key});
+
+  @override
+  State<TabletForgotPasswordScreen> createState() =>
+      _TabletForgotPasswordScreenState();
+}
+
+class _TabletForgotPasswordScreenState
+    extends State<TabletForgotPasswordScreen> {
+  final _formKey = GlobalKey<FormState>();
+  String email = '';
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      context
+          .read<AuthScreenBloc>()
+          .add(AuthScreenResetPasswordEvent(email: email));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      appBar:  CustomMobileAppBar(onMenuTap: () {
-        
-      },),
+      appBar: CustomMobileAppBar(onMenuTap: () {}),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -30,61 +54,110 @@ class TabletForgotPasswordScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(
-                  width: width * 0.03,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Forgot Password',
-                        style: const AppTextStyles().h3WorkSans),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                        'Please enter your email address below, \nwe will send you a link to reset your password.',
-                        textAlign: TextAlign.start,
-                        style: const AppTextStyles()
-                            .bodyText
-                            .copyWith(fontSize: 16)),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    SizedBox(
-                        width: 400,
-                        height: 55,
-                        child: CustomTextField(
-                          prefix: const Icon(
-                            Icons.email_outlined,
-                            color: AppColors.secondaryText,
+                SizedBox(width: width * 0.03),
+                BlocListener<AuthScreenBloc, AuthScreenState>(
+                  listener: (context, state) {
+                    if (state is AuthScreenFailure) {
+                      showCustomSnackBar(
+                        context,
+                        message: state.message,
+                        type: SnackBarType.error,
+                      );
+                    }
+                    if (state is AuthScreenSucess) {
+                      showCustomSnackBar(
+                        context,
+                        message: 'Password reset email sent',
+                        type: SnackBarType.success,
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MobileOtpScreen(
+                            type: OtpType.recovery,
+                            email: email,
                           ),
-                          borderRadius: 20,
-                          borderColor: AppColors.primaryText,
-                          borderWidth: 1,
-                          hintText: 'Email Address',
-                          hintStyle: const AppTextStyles(color: Colors.black)
-                              .baseBodyWorkSans,
-                        )),
-                    const SizedBox(
-                      height: 40,
+                        ),
+                      );
+                    }
+                  },
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Forgot Password',
+                          style: const AppTextStyles().h3WorkSans,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'Please enter your email address below, \nwe will send you a link to reset your password.',
+                          textAlign: TextAlign.start,
+                          style: const AppTextStyles()
+                              .bodyText
+                              .copyWith(fontSize: 16),
+                        ),
+                        const SizedBox(height: 40),
+                        SizedBox(
+                          width: 400,
+                          height: 85,
+                          child: CustomTextField(
+                            prefix: const Icon(
+                              Icons.email_outlined,
+                              color: AppColors.secondaryText,
+                            ),
+                            borderRadius: 20,
+                            borderColor: AppColors.primaryText,
+                            borderWidth: 1,
+                            hintText: 'Email Address',
+                            onSaved: (value) => email = value ?? '',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email address';
+                              }
+                              if (!RegExp(
+                                      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+                                  .hasMatch(value)) {
+                                return 'Please enter a valid email address';
+                              }
+                              return null;
+                            },
+                            hintStyle: const AppTextStyles(color: Colors.black)
+                                .baseBodyWorkSans,
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        BlocBuilder<AuthScreenBloc, AuthScreenState>(
+                          builder: (context, state) {
+                            return CustomRoundedButton(
+                              onTap: _submitForm,
+                              height: 65,
+                              width: 400,
+                              color: AppColors.primaryButton,
+                              child: state is AuthScreenLoading
+                                  ? const CupertinoActivityIndicator(
+                                      color: Colors.white,
+                                      radius: 15,
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        'Send OTP',
+                                        style: const AppTextStyles()
+                                            .baseBodyWorkSans
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                    ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                    CustomRoundedButton(
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, RouteNames.otpScreen);
-                        },
-                        height: 55,
-                        width: 400,
-                        color: AppColors.primaryButton,
-                        child: Center(
-                            child: Text('Send Otp',
-                                style:
-                                    const AppTextStyles().baseBodyWorkSans))),
-                  ],
-                )
+                  ),
+                ),
               ],
             ),
-            const CustomTabletFooter()
+            const CustomTabletFooter(),
           ],
         ),
       ),

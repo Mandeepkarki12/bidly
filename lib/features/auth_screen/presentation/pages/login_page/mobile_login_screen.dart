@@ -7,6 +7,7 @@ import 'package:bidly/core/widgets/custom_rounded_button.dart';
 import 'package:bidly/core/widgets/custom_snackbar.dart';
 import 'package:bidly/core/widgets/custom_textfield.dart';
 import 'package:bidly/features/auth_screen/presentation/bloc/auth_screen_bloc.dart';
+import 'package:bidly/features/auth_screen/presentation/bloc/passwordMask/password_mask_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,187 +41,210 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:  CustomMobileAppBar(onMenuTap: () {
-        
-      },),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: BlocListener<AuthScreenBloc, AuthScreenState>(
-            listener: (context, state) {
-              if (state is AuthScreenFailure) {
-                showCustomSnackBar(
-                  context,
-                  message: state.message,
-                  type: SnackBarType.error,
-                );
-              }
-              if (state is AuthScreenSucess) {
-                print('User ID after loggin in : ${state.userId}');
-                // saving user id after logging in to shared preferences
+    return BlocProvider(
+      create: (context) => PasswordMaskBloc(),
+      child: Scaffold(
+        appBar: CustomMobileAppBar(
+          onMenuTap: () {},
+          isMenu: false,
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: BlocListener<AuthScreenBloc, AuthScreenState>(
+              listener: (context, state) {
+                if (state is AuthScreenFailure) {
+                  showCustomSnackBar(
+                    context,
+                    message: state.message,
+                    type: SnackBarType.error,
+                  );
+                }
+                if (state is AuthScreenSucess) {
+                  print('User ID after loggin in : ${state.userId}');
+                  // saving user id after logging in to shared preferences
 
-                showCustomSnackBar(
-                  context,
-                  message: 'Login Successful for ${state.userId}',
-                  type: SnackBarType.success,
-                );
-                Navigator.pushNamedAndRemoveUntil(
-                    context, RouteNames.homeScreen, (route) => false);
-              }
-            },
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 232,
-                    width: double.infinity,
-                    child: Image.asset(
-                      'assets/images/login_signup_image.png',
-                      fit: BoxFit.cover,
+                  showCustomSnackBar(
+                    context,
+                    message: 'Login Successful for ${state.userId}',
+                    type: SnackBarType.success,
+                  );
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, RouteNames.homeScreen, (route) => false);
+                }
+              },
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 232,
+                      width: double.infinity,
+                      child: Image.asset(
+                        'assets/images/login_signup_image.png',
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  Text('Login', style: const AppTextStyles().h3WorkSans),
-                  const SizedBox(height: 20),
-                  Text('Please enter your credentials !!',
-                      style: const AppTextStyles().baseBodyWorkSans),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  SizedBox(
-                      width: double.infinity,
-                      height: 85,
-                      child: CustomTextField(
-                        prefix: const Icon(
-                          Icons.email_outlined,
-                          color: AppColors.secondaryText,
-                        ),
-                        borderRadius: 20,
-                        borderColor: AppColors.primaryText,
-                        borderWidth: 1,
-                        hintText: 'Email Address',
-                        onSaved: (value) {
-                          email = value ?? '';
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          final emailRegex = RegExp(
-                              r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
-                          if (!emailRegex.hasMatch(value)) {
-                            return 'Please enter a valid email address';
-                          }
-                          return null;
-                        },
-                        hintStyle: const AppTextStyles(color: Colors.black)
-                            .baseBodyWorkSans,
-                      )),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  SizedBox(
-                      width: double.infinity,
-                      height: 85,
-                      child: CustomTextField(
-                        suffix: const Icon(
-                          Icons.remove_red_eye,
-                          color: AppColors.secondaryText,
-                          size: 25,
-                        ),
-                        prefix: const Icon(
-                          Icons.lock,
-                          color: AppColors.secondaryText,
-                        ),
-                        borderRadius: 20,
-                        borderColor: AppColors.primaryText,
-                        borderWidth: 1,
-                        hintText: 'Password',
-                        onSaved: (value) {
-                          password = value ?? '';
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          return null;
-                        },
-                        hintStyle: const AppTextStyles(color: Colors.black)
-                            .baseBodyWorkSans,
-                      )),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, RouteNames.forgotPasswordScreen);
-                        },
-                        child: Text(
-                          'Forgot Password ?',
-                          style: const AppTextStyles()
-                              .baseBodyWorkSans
-                              .copyWith(color: AppColors.primaryText),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  BlocBuilder<AuthScreenBloc, AuthScreenState>(
-                    builder: (context, state1) {
-                      return CustomRoundedButton(
-                          onTap: () {
-                            submitForm();
+                    const SizedBox(height: 30),
+                    Text('Login', style: const AppTextStyles().h3WorkSans),
+                    const SizedBox(height: 20),
+                    Text('Please enter your credentials !!',
+                        style: const AppTextStyles().baseBodyWorkSans),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SizedBox(
+                        width: double.infinity,
+                        height: 85,
+                        child: CustomTextField(
+                          prefix: const Icon(
+                            Icons.email_outlined,
+                            color: AppColors.secondaryText,
+                          ),
+                          borderRadius: 20,
+                          borderColor: AppColors.primaryText,
+                          borderWidth: 1,
+                          hintText: 'Email Address',
+                          onSaved: (value) {
+                            email = value ?? '';
                           },
-                          height: 60,
-                          width: double.infinity,
-                          color: AppColors.primaryButton,
-                          child: state1 is AuthScreenLoading
-                              ? const CupertinoActivityIndicator(
-                                  color: Colors.white,
-                                  radius: 15,
-                                )
-                              : Center(
-                                  child: Text('Login',
-                                      style: const AppTextStyles()
-                                          .baseBodyWorkSans)));
-                    },
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Doesn\'t have an account ? ',
-                          style: const AppTextStyles().baseBodyWorkSans),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
-                              context, RouteNames.signupScreen);
-                        },
-                        child: Text('SignUp',
-                            style: const AppTextStyles(
-                                    color: AppColors.primaryButton)
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            final emailRegex = RegExp(
+                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                            if (!emailRegex.hasMatch(value)) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
+                          hintStyle: const AppTextStyles(color: Colors.black)
+                              .baseBodyWorkSans,
+                        )),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    BlocBuilder<PasswordMaskBloc, PasswordMaskState>(
+                      builder: (context, state) {
+                        final isVisible = state is PasswordMaskVisible
+                            ? state.isVisible
+                            : false; // Check if the password is visible
+                        return SizedBox(
+                            width: double.infinity,
+                            height: 85,
+                            child: CustomTextField(
+                              obscureText: !isVisible,
+                              suffix: GestureDetector(
+                                onTap: () {
+                                  context.read<PasswordMaskBloc>().add(
+                                      PasswordMaskToggle(
+                                          isVisible: !isVisible));
+                                },
+                                child: Icon(
+                                  isVisible
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility,
+                                  color: AppColors.secondaryText,
+                                  size: 25,
+                                ),
+                              ),
+                              prefix: const Icon(
+                                Icons.lock,
+                                color: AppColors.secondaryText,
+                              ),
+                              borderRadius: 20,
+                              borderColor: AppColors.primaryText,
+                              borderWidth: 1,
+                              hintText: 'Password',
+                              onSaved: (value) {
+                                password = value ?? '';
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                return null;
+                              },
+                              hintStyle:
+                                  const AppTextStyles(color: Colors.black)
+                                      .baseBodyWorkSans,
+                            ));
+                      },
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, RouteNames.forgotPasswordScreen);
+                          },
+                          child: Text(
+                            'Forgot Password ?',
+                            style: const AppTextStyles()
                                 .baseBodyWorkSans
-                                .copyWith(
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: AppColors.primaryButton)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  const CustomMobileFooter()
-                ],
+                                .copyWith(color: AppColors.primaryText),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    BlocBuilder<AuthScreenBloc, AuthScreenState>(
+                      builder: (context, state1) {
+                        return CustomRoundedButton(
+                            onTap: () {
+                              submitForm();
+                            },
+                            height: 60,
+                            width: double.infinity,
+                            color: AppColors.primaryButton,
+                            child: state1 is AuthScreenLoading
+                                ? const CupertinoActivityIndicator(
+                                    color: Colors.white,
+                                    radius: 15,
+                                  )
+                                : Center(
+                                    child: Text('Login',
+                                        style: const AppTextStyles()
+                                            .baseBodyWorkSans)));
+                      },
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Doesn\'t have an account ? ',
+                            style: const AppTextStyles().baseBodyWorkSans),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacementNamed(
+                                context, RouteNames.signupScreen);
+                          },
+                          child: Text('SignUp',
+                              style: const AppTextStyles(
+                                      color: AppColors.primaryButton)
+                                  .baseBodyWorkSans
+                                  .copyWith(
+                                      decoration: TextDecoration.underline,
+                                      decorationColor:
+                                          AppColors.primaryButton)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const CustomMobileFooter()
+                  ],
+                ),
               ),
             ),
           ),

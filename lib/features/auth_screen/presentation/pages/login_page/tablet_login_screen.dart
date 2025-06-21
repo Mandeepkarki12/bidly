@@ -15,7 +15,9 @@ class TabletLoginScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: const CustomMobileAppBar(),
+      appBar:  CustomMobileAppBar(onMenuTap: () {
+        
+      },),
       body: SingleChildScrollView(
         child: Column(
           children: [

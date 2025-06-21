@@ -15,9 +15,12 @@ class TabletHomeScreen extends StatelessWidget {
   const TabletHomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
+   
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: const CustomMobileAppBar(),
+      appBar:  CustomMobileAppBar(onMenuTap: () {
+        
+      },),
       body: SingleChildScrollView(
         child: Column(
           children: [

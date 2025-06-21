@@ -1,13 +1,13 @@
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 
-import 'package:bidly/features/auth_screen/presentation/bloc/auth_screen_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_svg/svg.dart';
 
 class CustomMobileAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const CustomMobileAppBar({super.key});
+  final VoidCallback onMenuTap;
+  const CustomMobileAppBar({super.key, required this.onMenuTap});
 
   @override
   State<CustomMobileAppBar> createState() => _CustomMobileAppBarState();
@@ -44,7 +44,7 @@ class _CustomMobileAppBarState extends State<CustomMobileAppBar> {
             color: AppColors.primaryText,
           ),
           onPressed: () {
-           
+            widget.onMenuTap();
           },
         ),
         SizedBox(width: width * 0.02),

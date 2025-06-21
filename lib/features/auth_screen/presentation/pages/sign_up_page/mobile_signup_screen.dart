@@ -58,7 +58,11 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomMobileAppBar(),
+      appBar: CustomMobileAppBar(
+        onMenuTap: () {
+          // Handle menu tap if needed
+        },
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -74,12 +78,16 @@ class _MobileSignUpScreenState extends State<MobileSignUpScreen> {
                 userId = state.userId;
                 // saving the user information into database my sql
                 context.read<AuthScreenBloc>().add(AuthSaveTodbEvent(
-                    userId: userId, userName: username, userEmail: email, ));
+                      userId: userId,
+                      userName: username,
+                      userEmail: email,
+                    ));
                 showCustomSnackBar(
                   context,
                   message: 'Signup successful',
                   type: SnackBarType.success,
                 );
+
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) {
                   return MobileOtpScreen(email: email, type: OtpType.signup);

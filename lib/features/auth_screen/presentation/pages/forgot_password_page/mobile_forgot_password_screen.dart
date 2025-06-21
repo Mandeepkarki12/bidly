@@ -36,7 +36,9 @@ class _MobileForgotPasswordScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomMobileAppBar(),
+      appBar:  CustomMobileAppBar(onMenuTap: () {
+        
+      },),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

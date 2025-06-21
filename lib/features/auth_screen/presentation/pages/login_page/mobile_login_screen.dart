@@ -1,5 +1,4 @@
 import 'package:bidly/core/routes/route_names.dart';
-import 'package:bidly/core/services/shared_prefrences.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
@@ -42,7 +41,9 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomMobileAppBar(),
+      appBar:  CustomMobileAppBar(onMenuTap: () {
+        
+      },),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

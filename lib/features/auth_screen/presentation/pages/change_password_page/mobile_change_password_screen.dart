@@ -42,7 +42,11 @@ class _MobileChangePasswordScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomMobileAppBar(),
+      appBar:  CustomMobileAppBar(
+        onMenuTap: () {
+          
+        },
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(

@@ -21,8 +21,8 @@ class OtpScreen extends StatelessWidget {
     return Scaffold(
       body: ResponsiveLayout(
         mobileBody: MobileOtpScreen(email: email, type: type),
-        webBody: DesktopOtpScreen(),
-        tabletBody: DesktopOtpScreen(),
+        webBody: DesktopOtpScreen(email: email , type: type,),
+        tabletBody: DesktopOtpScreen(email: email ,type: type,),
       ),
     );
   }

@@ -1,9 +1,11 @@
+import 'package:bidly/core/services/shared_prefrences.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_mobile_appbar.dart';
 import 'package:bidly/core/widgets/custom_footer/custom_tablet_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_browse_categories.dart';
+import 'package:bidly/features/home_screen/presentation/widgets/mobile_widgets/mobile_drawer.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/tablet_widgets/tablet_auction_widget.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/tablet_widgets/tablet_discover_more_aution.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/tablet_widgets/tablet_trending_auction.dart';
@@ -11,16 +13,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
-class TabletHomeScreen extends StatelessWidget {
+class TabletHomeScreen extends StatefulWidget {
   const TabletHomeScreen({super.key});
+
+  @override
+  State<TabletHomeScreen> createState() => _TabletHomeScreenState();
+}
+
+class _TabletHomeScreenState extends State<TabletHomeScreen> {
+  final SecureStorageService secureStorageService = SecureStorageService();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-   
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar:  CustomMobileAppBar(onMenuTap: () {
-        
-      },),
+      key: _scaffoldKey,
+      appBar: CustomMobileAppBar(
+        onMenuTap: () {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _scaffoldKey.currentState?.openEndDrawer();
+          });
+        },
+      ),
+      endDrawer: const MobileDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [

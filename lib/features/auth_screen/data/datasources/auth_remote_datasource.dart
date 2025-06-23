@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bidly/core/errors/exception.dart';
 import 'package:bidly/core/services/shared_prefrences.dart';
 import 'package:bidly/core/utils/app_apis.dart';

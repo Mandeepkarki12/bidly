@@ -4,175 +4,361 @@ import 'package:bidly/core/theme/text_styles.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_web_appbar.dart';
 import 'package:bidly/core/widgets/custom_footer/custom_web_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';
+import 'package:bidly/core/widgets/custom_snackbar.dart';
 import 'package:bidly/core/widgets/custom_textfield.dart';
+import 'package:bidly/features/auth_screen/presentation/bloc/auth_screen_bloc.dart';
+import 'package:bidly/features/auth_screen/presentation/bloc/passwordMask/password_mask_bloc.dart';
+import 'package:bidly/features/auth_screen/presentation/pages/otp_page/desktop_otp_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class DesktopSignUpScreen extends StatelessWidget {
+class DesktopSignUpScreen extends StatefulWidget {
   const DesktopSignUpScreen({super.key});
+
+  @override
+  State<DesktopSignUpScreen> createState() => _DesktopSignUpScreenState();
+}
+
+class _DesktopSignUpScreenState extends State<DesktopSignUpScreen> {
+  String username = '';
+  String email = '';
+  String password = '';
+  String confirmPassword = '';
+  String userId = '';
+
+  final _formKey = GlobalKey<FormState>();
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      if (password != confirmPassword) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Passwords do not match')),
+        );
+        return;
+      }
+
+      debugPrint('Username: $username');
+      debugPrint('Email: $email');
+      debugPrint('Password: $password');
+      debugPrint('Confirm Password: $confirmPassword');
+
+      context.read<AuthScreenBloc>().add(
+            AuthScreenSignupEvent(
+              userName: username,
+              email: email,
+              password: password,
+            ),
+          );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: const CustomWebAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
+    return BlocProvider(
+      create: (context) => PasswordMaskBloc(),
+      child: Scaffold(
+        appBar: const CustomWebAppBar(),
+        body: BlocListener<AuthScreenBloc, AuthScreenState>(
+          listener: (context, state) {
+            if (state is AuthScreenFailure) {
+              showCustomSnackBar(
+                context,
+                message: state.message,
+                type: SnackBarType.error,
+              );
+            } else if (state is AuthScreenSucess) {
+              userId = state.userId;
+              // saving the user information into database my sql
+              context.read<AuthScreenBloc>().add(AuthSaveTodbEvent(
+                    userId: userId,
+                    userName: username,
+                    userEmail: email,
+                  ));
+              showCustomSnackBar(
+                context,
+                message: 'Signup successful',
+                type: SnackBarType.success,
+              );
+
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                return  DesktopOtpScreen(
+                  email: email,
+                  type: OtpType.signup,
+                );
+              }));
+            }
+          },
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                SizedBox(
-                    height: 691,
-                    width: width * 0.48,
-                    child: Image.asset('assets/images/login_signup_image.png',
-                        fit: BoxFit.cover)),
-                SizedBox(width: width * 0.03),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    Text(
-                      'Create an Account',
-                      style: const AppTextStyles().h2WorkSans,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'Welcome! enter your details and start\n creating, collecting and selling Products.',
-                      style: const AppTextStyles().bodyText,
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
                     SizedBox(
-                        height: 50,
-                        width: 350,
-                        child: CustomTextField(
-                          prefix: const Icon(
-                            Icons.person_2_outlined,
-                            color: AppColors.secondaryText,
-                          ),
-                          borderRadius: 20,
-                          borderColor: AppColors.primaryText,
-                          borderWidth: 1,
-                          hintText: 'Username',
-                          hintStyle: const AppTextStyles(color: Colors.black)
-                              .baseBodyWorkSans,
-                        )),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                        height: 50,
-                        width: 350,
-                        child: CustomTextField(
-                          prefix: const Icon(
-                            Icons.email_outlined,
-                            color: AppColors.secondaryText,
-                          ),
-                          borderRadius: 20,
-                          borderColor: AppColors.primaryText,
-                          borderWidth: 1,
-                          hintText: 'Email Address',
-                          hintStyle: const AppTextStyles(color: Colors.black)
-                              .baseBodyWorkSans,
-                        )),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                        height: 50,
-                        width: 350,
-                        child: CustomTextField(
-                          suffix: const Icon(
-                            Icons.remove_red_eye_outlined,
-                            color: AppColors.secondaryText,
-                          ),
-                          prefix: const Icon(
-                            Icons.lock,
-                            color: AppColors.secondaryText,
-                          ),
-                          borderRadius: 20,
-                          borderColor: AppColors.primaryText,
-                          borderWidth: 1,
-                          hintText: 'Password',
-                          hintStyle: const AppTextStyles(color: Colors.black)
-                              .baseBodyWorkSans,
-                        )),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                        height: 50,
-                        width: 350,
-                        child: CustomTextField(
-                          suffix: const Icon(
-                            Icons.remove_red_eye_outlined,
-                            color: AppColors.secondaryText,
-                          ),
-                          prefix: const Icon(
-                            Icons.lock,
-                            color: AppColors.secondaryText,
-                          ),
-                          borderRadius: 20,
-                          borderColor: AppColors.primaryText,
-                          borderWidth: 1,
-                          hintText: 'Confirm Password',
-                          hintStyle: const AppTextStyles(color: Colors.black)
-                              .baseBodyWorkSans,
-                        )),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    CustomRoundedButton(
-                      onTap: () => {},
-                      height: 50,
-                      width: 350,
-                      radius: 20,
-                      color: AppColors.primaryButton,
-                      child: Center(
-                        child: Text(
-                          'Create Account',
-                          style: const AppTextStyles()
-                              .baseBodyWorkSans
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 50),
-                      child: Row(
+                        height: 720,
+                        width: width * 0.48,
+                        child: Image.asset(
+                            'assets/images/login_signup_image.png',
+                            fit: BoxFit.cover)),
+                    SizedBox(width: width * 0.03),
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Already have an account?',
-                            style: const AppTextStyles().baseBodyWorkSans,
+                            'Create an Account',
+                            style: const AppTextStyles().h2WorkSans,
                           ),
                           const SizedBox(
-                            width: 10,
+                            height: 20,
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, RouteNames.loginScreen);
+                          Text(
+                            'Welcome! enter your details and start\n creating, collecting and selling Products.',
+                            style: const AppTextStyles().bodyText,
+                          ),
+                          const SizedBox(
+                            height: 40,
+                          ),
+                          SizedBox(
+                              height: 80,
+                              width: 350,
+                              child: CustomTextField(
+                                prefix: const Icon(
+                                  Icons.person_2_outlined,
+                                  color: AppColors.secondaryText,
+                                ),
+                                borderRadius: 20,
+                                borderColor: AppColors.primaryText,
+                                borderWidth: 1,
+                                onSaved: (value) {
+                                  username = value ?? '';
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your username';
+                                  }
+                                  if (value.length < 3) {
+                                    return 'Username must be at least 3 characters';
+                                  }
+                                  return null;
+                                },
+                                hintText: 'Username',
+                                hintStyle:
+                                    const AppTextStyles(color: Colors.black)
+                                        .baseBodyWorkSans,
+                              )),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                              height: 80,
+                              width: 350,
+                              child: CustomTextField(
+                                prefix: const Icon(
+                                  Icons.email_outlined,
+                                  color: AppColors.secondaryText,
+                                ),
+                                borderRadius: 20,
+                                borderColor: AppColors.primaryText,
+                                borderWidth: 1,
+                                onSaved: (value) {
+                                  email = value ?? '';
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your email';
+                                  }
+                                  final emailRegex = RegExp(
+                                      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+                                  if (!emailRegex.hasMatch(value)) {
+                                    return 'Please enter a valid email address';
+                                  }
+                                  return null;
+                                },
+                                hintText: 'Email Address',
+                                hintStyle:
+                                    const AppTextStyles(color: Colors.black)
+                                        .baseBodyWorkSans,
+                              )),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          BlocBuilder<PasswordMaskBloc, PasswordMaskState>(
+                            builder: (context, state) {
+                              final isVisible = state is PasswordMaskVisible
+                                  ? state.isVisible
+                                  : false;
+                              return SizedBox(
+                                  height: 80,
+                                  width: 350,
+                                  child: CustomTextField(
+                                    obscureText: !isVisible,
+                                    suffix: GestureDetector(
+                                      onTap: () {
+                                        context.read<PasswordMaskBloc>().add(
+                                            PasswordMaskToggle(
+                                                isVisible: !isVisible));
+                                      },
+                                      child: Icon(
+                                        isVisible
+                                            ? Icons.visibility_off_outlined
+                                            : Icons.visibility,
+                                        color: AppColors.secondaryText,
+                                      ),
+                                    ),
+                                    prefix: const Icon(
+                                      Icons.lock,
+                                      color: AppColors.secondaryText,
+                                    ),
+                                    borderRadius: 20,
+                                    borderColor: AppColors.primaryText,
+                                    borderWidth: 1,
+                                    onSaved: (value) {
+                                      password = value ?? '';
+                                    },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your password';
+                                      }
+                                      if (value.length < 6) {
+                                        return 'Password must be at least 6 characters';
+                                      }
+                                      return null;
+                                    },
+                                    hintText: 'Password',
+                                    hintStyle:
+                                        const AppTextStyles(color: Colors.black)
+                                            .baseBodyWorkSans,
+                                  ));
                             },
-                            child: Text(
-                              'Login',
-                              style: const AppTextStyles()
-                                  .baseBodyWorkSans
-                                  .copyWith(color: AppColors.primaryButton),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          BlocBuilder<PasswordMaskBloc, PasswordMaskState>(
+                            builder: (context, state) {
+                              final isVisible = state is PasswordMaskVisible
+                                  ? state.isVisible
+                                  : false;
+                              return SizedBox(
+                                  height: 80,
+                                  width: 350,
+                                  child: CustomTextField(
+                                    obscureText: !isVisible,
+                                    suffix: GestureDetector(
+                                      onTap: () {
+                                        context.read<PasswordMaskBloc>().add(
+                                            PasswordMaskToggle(
+                                                isVisible: !isVisible));
+                                      },
+                                      child: Icon(
+                                        isVisible
+                                            ? Icons.visibility_off_outlined
+                                            : Icons.visibility,
+                                        color: AppColors.secondaryText,
+                                      ),
+                                    ),
+                                    prefix: const Icon(
+                                      Icons.lock,
+                                      color: AppColors.secondaryText,
+                                    ),
+                                    borderRadius: 20,
+                                    borderColor: AppColors.primaryText,
+                                    borderWidth: 1,
+                                    onSaved: (value) {
+                                      confirmPassword = value ?? '';
+                                    },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please confirm your password';
+                                      }
+                                      if (value.length < 6) {
+                                        return 'Password must be at least 6 characters';
+                                      }
+                                      return null;
+                                    },
+                                    hintText: 'Confirm Password',
+                                    hintStyle:
+                                        const AppTextStyles(color: Colors.black)
+                                            .baseBodyWorkSans,
+                                  ));
+                            },
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          BlocBuilder<AuthScreenBloc, AuthScreenState>(
+                            builder: (context, state) {
+                              return CustomRoundedButton(
+                                onTap: () => _submitForm(),
+                                height: 60,
+                                width: 350,
+                                radius: 20,
+                                color: AppColors.primaryButton,
+                                child: state is! AuthScreenLoading
+                                    ? Center(
+                                        child: Text(
+                                          'Create Account',
+                                          style: const AppTextStyles()
+                                              .baseBodyWorkSans
+                                              .copyWith(color: Colors.white),
+                                        ),
+                                      )
+                                    : const Center(
+                                        child: CupertinoActivityIndicator(
+                                          color: Colors.white,
+                                          radius: 15,
+                                        ),
+                                      ),
+                              );
+                            },
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 50),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Already have an account?',
+                                  style: const AppTextStyles().baseBodyWorkSans,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, RouteNames.loginScreen);
+                                  },
+                                  child: Text(
+                                    'Login',
+                                    style: const AppTextStyles()
+                                        .baseBodyWorkSans
+                                        .copyWith(
+                                            color: AppColors.primaryButton),
+                                  ),
+                                ),
+                              ],
                             ),
+                          ),
+                          const SizedBox(
+                            height: 30,
                           ),
                         ],
                       ),
-                    ),
+                    )
                   ],
-                )
+                ),
+                const CustomWebFooter()
               ],
             ),
-            const CustomWebFooter()
-          ],
+          ),
         ),
       ),
     );

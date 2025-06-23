@@ -1,9 +1,20 @@
 part of 'home_screen_bloc.dart';
 
-abstract class HomeScreenState extends Equatable {
-  const HomeScreenState();  
+@immutable
+sealed class HomeScreenState {}
 
-  @override
-  List<Object> get props => [];
-}
 class HomeScreenInitial extends HomeScreenState {}
+
+class HomeScreenLoading extends HomeScreenState {}
+
+class HomeScreenLoaded extends HomeScreenState {
+  final GetHomeDataEntity homeData;
+
+  HomeScreenLoaded({required this.homeData});
+}
+
+class HomeScreenError extends HomeScreenState {
+  final String message;
+
+  HomeScreenError({required this.message});
+}

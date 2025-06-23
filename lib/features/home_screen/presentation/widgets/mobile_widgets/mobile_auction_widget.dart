@@ -6,7 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
 class MobileAuctionWidget extends StatelessWidget {
-  const MobileAuctionWidget({super.key});
+  final String? imageUrl;
+  final String? userProfileUrl;
+  final String? userName;
+  final String? auctionTitle;
+  const MobileAuctionWidget(
+      {super.key,
+      this.imageUrl,
+      this.userProfileUrl,
+      this.userName,
+      this.auctionTitle});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +27,9 @@ class MobileAuctionWidget extends StatelessWidget {
         children: [
           Positioned.fill(
             child: OctoImage(
-              image: const NetworkImage(
-                'https://images.pexels.com/photos/2385477/pexels-photo-2385477.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+              image: NetworkImage(
+                imageUrl ??
+                    'https://images.pexels.com/photos/2385477/pexels-photo-2385477.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
               ),
               fit: BoxFit.cover,
               placeholderBuilder: (context) =>
@@ -41,48 +51,57 @@ class MobileAuctionWidget extends StatelessWidget {
                   CustomRoundedButton(
                       radius: 20,
                       onTap: () {},
-                      width: 151,
                       height: 44,
+                      width: 220,
                       color: AppColors.backGroundSecondary,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 12,
-                            backgroundColor: AppColors.backGroundTertiary,
-                            child: ClipOval(
-                              child: OctoImage(
-                                image: const NetworkImage(
-                                  'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                                ),
-                                width: 24,
-                                height: 24,
-                                fit: BoxFit.cover,
-                                placeholderBuilder: (context) =>
-                                    const CupertinoActivityIndicator(),
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(
-                                  Icons.error_outline_outlined,
-                                  color: Colors.red,
-                                  size: 24,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 12,
+                              backgroundColor: AppColors.backGroundTertiary,
+                              child: ClipOval(
+                                child: OctoImage(
+                                  image: NetworkImage(
+                                    userProfileUrl ??
+                                        'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                                  ),
+                                  width: 24,
+                                  height: 24,
+                                  fit: BoxFit.cover,
+                                  placeholderBuilder: (context) =>
+                                      const CupertinoActivityIndicator(),
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Icon(
+                                    Icons.error_outline_outlined,
+                                    color: Colors.red,
+                                    size: 24,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            'John Doe',
-                            style: const AppTextStyles().baseBodyWorkSans,
-                          )
-                        ],
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            SizedBox(
+                              width: 140,
+                              child: Text(
+                                userName ?? 'John Doe',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                                style: const AppTextStyles().baseBodyWorkSans,
+                              ),
+                            )
+                          ],
+                        ),
                       )),
                   const SizedBox(
                     height: 30,
                   ),
                   Text(
-                    'Nike Products',
+                    auctionTitle ?? 'Nike Products',
                     style: const AppTextStyles().h4WorkSans,
                   ),
                   const SizedBox(

@@ -18,7 +18,10 @@ class DesktopHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: const CustomWebAppBar(),
+      appBar: const CustomWebAppBar(
+        isHomepage: true,
+        isLoggedIn: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

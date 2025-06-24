@@ -6,7 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
 class TabletAuctionWidget extends StatelessWidget {
-  const TabletAuctionWidget({super.key});
+  final String? imageUrl;
+  final String? title;
+  final String? sellerName;
+  final String? sellerImageUrl;
+  const TabletAuctionWidget(
+      {super.key,
+      this.imageUrl,
+      this.title,
+      this.sellerName,
+      this.sellerImageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +27,9 @@ class TabletAuctionWidget extends StatelessWidget {
         children: [
           Positioned.fill(
             child: OctoImage(
-              image: const NetworkImage(
-                'https://images.pexels.com/photos/2385477/pexels-photo-2385477.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+              image: NetworkImage(
+                imageUrl ??
+                    'https://images.pexels.com/photos/2385477/pexels-photo-2385477.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
               ),
               fit: BoxFit.cover,
               placeholderBuilder: (context) =>
@@ -44,8 +54,8 @@ class TabletAuctionWidget extends StatelessWidget {
                     CustomRoundedButton(
                         radius: 20,
                         onTap: () {},
-                        width: 151,
-                        height: 44,
+                        width: width * 0.3,
+                        height: 48,
                         color: AppColors.backGroundSecondary,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -55,8 +65,9 @@ class TabletAuctionWidget extends StatelessWidget {
                               backgroundColor: AppColors.backGroundTertiary,
                               child: ClipOval(
                                 child: OctoImage(
-                                  image: const NetworkImage(
-                                    'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                                  image: NetworkImage(
+                                    sellerImageUrl ??
+                                        'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
                                   ),
                                   width: 24,
                                   height: 24,
@@ -75,9 +86,14 @@ class TabletAuctionWidget extends StatelessWidget {
                             const SizedBox(
                               width: 8,
                             ),
-                            Text(
-                              'John Doe',
-                              style: const AppTextStyles().baseBodyWorkSans,
+                            SizedBox(
+                              width: width * 0.2,
+                              child: Text(
+                                sellerName ?? 'John Doekfalsflasmflasmlfkdm',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const AppTextStyles().baseBodyWorkSans,
+                              ),
                             )
                           ],
                         )),
@@ -90,9 +106,14 @@ class TabletAuctionWidget extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Nike Products',
-                              style: const AppTextStyles().h3WorkSans,
+                            SizedBox(
+                              width: width * 0.42,
+                              child: Text(
+                                title ?? 'Nike Air',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const AppTextStyles().h3WorkSans,
+                              ),
                             ),
                             const SizedBox(
                               height: 30,

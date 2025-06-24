@@ -5,13 +5,26 @@ import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
 class TabletDiscoverMoreAution extends StatelessWidget {
-  const TabletDiscoverMoreAution({super.key});
+  final String? imageUrl;
+  final String? title;
+  final String? sellerName;
+  final String? sellerImageUrl;
+  final String? price;
+  const TabletDiscoverMoreAution({
+    super.key,
+    this.imageUrl,
+    this.title,
+    this.sellerName,
+    this.sellerImageUrl,
+    this.price,
+  });
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return Container(
       width: width * 0.42,
       height: 470,
+      margin: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
         color: AppColors.backGroundSecondary,
         borderRadius: BorderRadius.circular(20),
@@ -27,8 +40,9 @@ class TabletDiscoverMoreAution extends StatelessWidget {
                 topRight: Radius.circular(20),
               ),
               child: OctoImage(
-                image: const NetworkImage(
-                  'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                image: NetworkImage(
+                  imageUrl ??
+                      'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
                 ),
                 width: 24,
                 height: 24,
@@ -52,7 +66,9 @@ class TabletDiscoverMoreAution extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Title ',
+                  title ?? 'Title ',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const AppTextStyles().h5WorkSans,
                 ),
                 const SizedBox(
@@ -65,8 +81,9 @@ class TabletDiscoverMoreAution extends StatelessWidget {
                       backgroundColor: AppColors.backGroundTertiary,
                       child: ClipOval(
                         child: OctoImage(
-                          image: const NetworkImage(
-                            'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                          image: NetworkImage(
+                            sellerImageUrl ??
+                                'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
                           ),
                           width: 24,
                           height: 24,
@@ -86,7 +103,9 @@ class TabletDiscoverMoreAution extends StatelessWidget {
                       width: 8,
                     ),
                     Text(
-                      'John Doe',
+                      sellerName ?? 'John Doe',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: const AppTextStyles().baseBodyWorkSans,
                     ),
                   ],
@@ -111,10 +130,21 @@ class TabletDiscoverMoreAution extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('0.01 ETH',
-                        style: const AppTextStyles().baseBodySpaceMono),
-                    Text('0.01 ETH',
-                        style: const AppTextStyles().baseBodySpaceMono),
+                    SizedBox(
+                      width: width * 0.2,
+                      child: Text(price ?? '0.01 ETH',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const AppTextStyles().baseBodySpaceMono),
+                    ),
+                    SizedBox(
+                      width: width * 0.2,
+                      child: Text(price ?? '0.01 ETH',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                          style: const AppTextStyles().baseBodySpaceMono),
+                    ),
                   ],
                 ),
               ],

@@ -6,8 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:octo_image/octo_image.dart';
 
 class DesktopAuctionWidget  extends StatelessWidget {
+  final String? imageurl;
+  final String? title;
+  final String? sellerName;
+  final String? sellerImageUrl;
   
-  const DesktopAuctionWidget ({super.key});
+  const DesktopAuctionWidget ({super.key, 
+    this.imageurl,
+    this.title,
+    this.sellerName,
+    this.sellerImageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +28,8 @@ class DesktopAuctionWidget  extends StatelessWidget {
         children: [
           Positioned.fill(
             child: OctoImage(
-              image: const NetworkImage(
+              image:  NetworkImage(
+                imageurl ??
                 'https://images.pexels.com/photos/2385477/pexels-photo-2385477.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
               ),
               fit: BoxFit.cover,
@@ -76,9 +86,15 @@ class DesktopAuctionWidget  extends StatelessWidget {
                             const SizedBox(
                               width: 8,
                             ),
-                            Text(
-                              'John Doe',
-                              style: const AppTextStyles().baseBodyWorkSans,
+                            SizedBox(
+                              width: 100,
+                              child: Text(
+                                sellerName ??
+                                'John Doe',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const AppTextStyles().baseBodyWorkSans,
+                              ),
                             )
                           ],
                         )),
@@ -92,7 +108,11 @@ class DesktopAuctionWidget  extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
+                              title ??
+                              
                               'Nike Products',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: const AppTextStyles().h2WorkSans,
                             ),
                             const SizedBox(

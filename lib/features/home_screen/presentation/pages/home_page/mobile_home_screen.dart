@@ -183,7 +183,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
                                       width: 8,
                                     ),
                                     Text(
-                                      topUser?.userName ?? 'John Doe',
+                                       topUser?.profileImage ?? 'John Doe',
                                       style: const AppTextStyles()
                                           .baseBodyWorkSans,
                                     )

@@ -1,19 +1,28 @@
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
+import 'package:bidly/core/utils/app_apis.dart';
 import 'package:bidly/core/widgets/custom_appbar/custom_web_appbar.dart';
 import 'package:bidly/core/widgets/custom_footer/custom_web_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';
+import 'package:bidly/features/home_screen/data/models/get_homedata_model.dart';
+import 'package:bidly/features/home_screen/presentation/bloc/home_screen_bloc.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_aution_widget.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_browse_categories.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_discover_more_aution.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_trending_auctions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:octo_image/octo_image.dart';
 
-class DesktopHomeScreen extends StatelessWidget {
+class DesktopHomeScreen extends StatefulWidget {
   const DesktopHomeScreen({super.key});
 
+  @override
+  State<DesktopHomeScreen> createState() => _DesktopHomeScreenState();
+}
+
+class _DesktopHomeScreenState extends State<DesktopHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -22,320 +31,393 @@ class DesktopHomeScreen extends StatelessWidget {
         isHomepage: true,
         isLoggedIn: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: BlocBuilder<HomeScreenBloc , HomeScreenState>(
+        builder: (context, state) {
+           if (state is HomeScreenInitial) {
+              context.read<HomeScreenBloc>().add(GetHomeDataEvent());
+            }
+            if (state is HomeScreenLoading) {
+              return const Center(
+                child: CupertinoActivityIndicator(
+                  radius: 20,
+                ),
+              );
+            }
+            if(state is HomeScreenError){
+              return const Center(
+                child: Text(
+                  'An error occurred, please try again later.',
+          
+                ),
+              );
+            }
+            if (state is HomeScreenError) {
+              return Center(
+                child: Text(
+                  state.message,
+                  style: const AppTextStyles().baseBodySpaceMono.copyWith(
+                        color: Colors.red,
+                      ),
+                ),
+              );
+            }
+          if (state is HomeScreenLoaded){
+             final homeData = state.homeData;
+              final topUser = homeData.data!.topUser;
+              final topProduct = homeData.data!.topOne;
+              final allItemCount = homeData.data!.allProducts.length;
+            return SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: width * 0.12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 590,
-                        width: width * 0.36,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Discover the best deals for you',
-                                style: const AppTextStyles().h1WorkSans),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'Buy and sell digital assets on Bidly, the leading platform for buying and selling digital assets.',
-                              style: const AppTextStyles().bodyText,
-                            ),
-                            const SizedBox(
-                              height: 25,
-                            ),
-                            CustomRoundedButton(
-                              onTap: () => {},
-                              height: 60,
-                              width: 244,
-                              color: AppColors.primaryButton,
-                              child: Center(
-                                child: Text(
-                                  'Get Started',
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            height: 590,
+                            width: width * 0.36,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Discover the best deals for you',
+                                    style: const AppTextStyles().h1WorkSans),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  'Buy and sell digital assets on Bidly, the leading platform for buying and selling digital assets.',
                                   style: const AppTextStyles().bodyText,
                                 ),
+                                const SizedBox(
+                                  height: 25,
+                                ),
+                                CustomRoundedButton(
+                                  onTap: () => {},
+                                  height: 60,
+                                  width: 244,
+                                  color: AppColors.primaryButton,
+                                  child: Center(
+                                    child: Text(
+                                      'Get Started',
+                                      style: const AppTextStyles().bodyText,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 25,
+                                ),
+                                Row(
+                                  children: [
+                                    Text('240k+',
+                                        style:
+                                            const AppTextStyles().h4SpaceMono),
+                                    SizedBox(
+                                      width: width * 0.05,
+                                    ),
+                                    Text('100k+',
+                                        style:
+                                            const AppTextStyles().h4SpaceMono),
+                                    SizedBox(
+                                      width: width * 0.05,
+                                    ),
+                                    Text('200k+',
+                                        style:
+                                            const AppTextStyles().h4SpaceMono),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    Text('Total sales',
+                                        style:
+                                            const AppTextStyles().h5WorkSans),
+                                    SizedBox(
+                                      width: width * 0.026,
+                                    ),
+                                    Text('Auctions',
+                                        style:
+                                            const AppTextStyles().h5WorkSans),
+                                    SizedBox(
+                                      width: width * 0.05,
+                                    ),
+                                    Text('Sellers',
+                                        style:
+                                            const AppTextStyles().h5WorkSans),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: width * 0.05,
+                          ),
+                          // top seller Account
+                          Container(
+                            height: 510,
+                            width: width * 0.28,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: AppColors.backGroundSecondary),
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                    ),
+                                  ),
+                                  height: 410,
+                                  width: double.infinity,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10),
+                                    ),
+                                    child: OctoImage(
+                                      image:  NetworkImage(
+                                         topUser?.profileImage ??
+                                        'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                                      ),
+                                      fit: BoxFit.cover,
+                                      placeholderBuilder: (context) =>
+                                          const CupertinoActivityIndicator(),
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const Center(
+                                        child: Icon(
+                                          Icons.error_outline_outlined,
+                                          color: Colors.red,
+                                          size: 24,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Top Seller',
+                                        style: const AppTextStyles().h5WorkSans,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 12,
+                                            backgroundColor:
+                                                AppColors.backGroundTertiary,
+                                            child: ClipOval(
+                                              child: OctoImage(
+                                                image:  NetworkImage(
+                                                   topUser?.profileImage ??
+                                                  'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+                                                ),
+                                                width: 24,
+                                                height: 24,
+                                                fit: BoxFit.cover,
+                                                placeholderBuilder: (context) =>
+                                                    const CupertinoActivityIndicator(),
+                                                errorBuilder: (context, error,
+                                                        stackTrace) =>
+                                                    const Icon(
+                                                  Icons.error_outline_outlined,
+                                                  color: Colors.red,
+                                                  size: 24,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                             topUser?.userName ??
+                                            'John Doe',
+                                            style: const AppTextStyles()
+                                                .baseBodyWorkSans,
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 100,
+                      ),
+                      Text(
+                        'Trending Auctions',
+                        style: const AppTextStyles().h3WorkSans,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Checkout our top auctions',
+                        style: const AppTextStyles().baseBodyWorkSans,
+                      ),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      SizedBox(
+                        height: 380,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: homeData.data!.trending.length,
+                          itemBuilder: (context , index){
+                          return DesktopTrendingAuctions(
+                            imageUrl: '$baseUrl${homeData.data!.trending[index].productImage}',
+                            title: homeData.data!.trending[index].title,
+                            sellerImageUrl: homeData.data!.trending[index].sellerProfileImage,
+                            sellerName: homeData.data!.trending[index].sellerName,
+                          );
+                        })
+                      ),
+                      const SizedBox(
+                        height: 100,
+                      ),
+                      SizedBox(
+                        height: 928,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Browse categories',
+                              style: const AppTextStyles().h3WorkSans,
+                            ),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              height: (316 * 2) + 30,
+                              child: GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4,
+                                  mainAxisSpacing: 30,
+                                  crossAxisSpacing: 30,
+                                  mainAxisExtent: 316,
+                                ),
+                                itemCount: homeData.data!.categories.length,
+                                itemBuilder: (context, index) {
+                                  return  DesktopBrowseCategories(
+                                    title: homeData.data!.categories[index].name
+                                  );
+                                },
                               ),
                             ),
-                            const SizedBox(
-                              height: 25,
-                            ),
-                            Row(
-                              children: [
-                                Text('240k+',
-                                    style: const AppTextStyles().h4SpaceMono),
-                                SizedBox(
-                                  width: width * 0.05,
-                                ),
-                                Text('100k+',
-                                    style: const AppTextStyles().h4SpaceMono),
-                                SizedBox(
-                                  width: width * 0.05,
-                                ),
-                                Text('200k+',
-                                    style: const AppTextStyles().h4SpaceMono),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                Text('Total sales',
-                                    style: const AppTextStyles().h5WorkSans),
-                                SizedBox(
-                                  width: width * 0.026,
-                                ),
-                                Text('Auctions',
-                                    style: const AppTextStyles().h5WorkSans),
-                                SizedBox(
-                                  width: width * 0.05,
-                                ),
-                                Text('Sellers',
-                                    style: const AppTextStyles().h5WorkSans),
-                              ],
-                            )
                           ],
                         ),
                       ),
                       SizedBox(
-                        width: width * 0.05,
-                      ),
-                      // top seller Account
-                      Container(
-                        height: 510,
-                        width: width * 0.28,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.backGroundSecondary),
+                        height: 780,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
+                            Text(
+                              'Discover More Auctions',
+                              style: const AppTextStyles().h3WorkSans,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Explore new trending auctions',
+                                  style: const AppTextStyles().bodyText,
                                 ),
-                              ),
-                              height: 410,
-                              width: double.infinity,
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  topRight: Radius.circular(10),
-                                ),
-                                child: OctoImage(
-                                  image: const NetworkImage(
-                                    'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                                  ),
-                                  fit: BoxFit.cover,
-                                  placeholderBuilder: (context) =>
-                                      const CupertinoActivityIndicator(),
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      const Center(
-                                    child: Icon(
-                                      Icons.error_outline_outlined,
-                                      color: Colors.red,
-                                      size: 24,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                                CustomRoundedButton(
+                                    onTap: () {},
+                                    height: 60,
+                                    width: 187,
+                                    shouldFill: false,
+                                    color: AppColors.primaryButton,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.remove_red_eye_outlined,
+                                          size: 20,
+                                          color: AppColors.primaryButton,
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          'See All',
+                                          style: const AppTextStyles()
+                                              .bodyText
+                                              .copyWith(fontSize: 16),
+                                        )
+                                      ],
+                                    ))
+                              ],
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 50,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Top Seller',
-                                    style: const AppTextStyles().h5WorkSans,
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  Row(
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 12,
-                                        backgroundColor:
-                                            AppColors.backGroundTertiary,
-                                        child: ClipOval(
-                                          child: OctoImage(
-                                            image: const NetworkImage(
-                                              'https://images.pexels.com/photos/3768163/pexels-photo-3768163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-                                            ),
-                                            width: 24,
-                                            height: 24,
-                                            fit: BoxFit.cover,
-                                            placeholderBuilder: (context) =>
-                                                const CupertinoActivityIndicator(),
-                                            errorBuilder:
-                                                (context, error, stackTrace) =>
-                                                    const Icon(
-                                              Icons.error_outline_outlined,
-                                              color: Colors.red,
-                                              size: 24,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'John Doe',
-                                        style: const AppTextStyles()
-                                            .baseBodyWorkSans,
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
+                            SizedBox(
+                              height: 470,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: homeData.data!.allProducts.length,
+                                itemBuilder: (centext , index){
+                                return DesktopDiscoverMoreAution(
+                                   imageUrl: '$baseUrl${homeData.data!.allProducts[index].productImage}',
+                                   price: homeData.data!.allProducts[index].minimumPrice.toString(),
+                                    title: homeData.data!.allProducts[index].title,
+                                    sellerImageUrl: homeData.data!.allProducts[index].sellerProfileImage,
+                                    sellerName: homeData.data!.allProducts[index].sellerName,
+                                );
+                              }),
+
                             )
                           ],
                         ),
                       ),
+                       DesktopAuctionWidget(
+                        imageurl: '$baseUrl${topProduct?.productImage}',
+                        title: homeData.data!.topOne?.title,
+                        sellerImageUrl: homeData.data!.topOne?.sellerProfileImage,
+                        sellerName: homeData.data!.topOne?.sellerName,
+                       ),
+                      const SizedBox(
+                        height: 80,
+                      ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 100,
-                  ),
-                  Text(
-                    'Trending Auctions',
-                    style: const AppTextStyles().h3WorkSans,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Checkout our top auctions',
-                    style: const AppTextStyles().baseBodyWorkSans,
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      DesktopTrendingAuctions(),
-                      DesktopTrendingAuctions(),
-                      DesktopTrendingAuctions()
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 100,
-                  ),
-                  SizedBox(
-                    height: 928,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Browse categories',
-                          style: const AppTextStyles().h3WorkSans,
-                        ),
-                        const SizedBox(
-                          height: 50,
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          height: (316 * 2) + 30,
-                          child: GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              mainAxisSpacing: 30,
-                              crossAxisSpacing: 30,
-                              mainAxisExtent: 316,
-                            ),
-                            itemCount: 8,
-                            itemBuilder: (context, index) {
-                              return const DesktopBrowseCategories();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 780,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Discover More Auctions',
-                          style: const AppTextStyles().h3WorkSans,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Explore new trending auctions',
-                              style: const AppTextStyles().bodyText,
-                            ),
-                            CustomRoundedButton(
-                                onTap: () {},
-                                height: 60,
-                                width: 187,
-                                shouldFill: false,
-                                color: AppColors.primaryButton,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      Icons.remove_red_eye_outlined,
-                                      size: 20,
-                                      color: AppColors.primaryButton,
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      'See All',
-                                      style: const AppTextStyles()
-                                          .bodyText
-                                          .copyWith(fontSize: 16),
-                                    )
-                                  ],
-                                ))
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 50,
-                        ),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            DesktopDiscoverMoreAution(),
-                            DesktopDiscoverMoreAution(),
-                            DesktopDiscoverMoreAution(),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const DesktopAuctionWidget(),
-                  const SizedBox(
-                    height: 80,
-                  ),
-                ],
-              ),
+                ),
+                const CustomWebFooter()
+              ],
             ),
-            const CustomWebFooter()
-          ],
-        ),
+          );
+          }
+          return const SizedBox();
+        },
+        
       ),
     );
   }

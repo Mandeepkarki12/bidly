@@ -111,7 +111,7 @@ class MobileAuctionWidget extends StatelessWidget {
                     height: 149,
                     width: 315,
                     padding: EdgeInsets.symmetric(
-                        horizontal: width * 0.07, vertical: 20),
+                        horizontal: width * 0.07, vertical: 15),
                     decoration: BoxDecoration(
                         color: AppColors.backGroundSecondary.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(20)),

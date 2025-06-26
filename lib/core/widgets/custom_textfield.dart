@@ -29,6 +29,7 @@ class CustomTextField extends StatelessWidget {
   final bool autovalidateMode;
   final Color? fillColor;
   final bool? filled;
+  final TextStyle? style;
 
   const CustomTextField({
     this.cursorColor = Colors.black,
@@ -60,6 +61,7 @@ class CustomTextField extends StatelessWidget {
     this.initialValue,
     this.autovalidateMode = false,
     this.fillColor = Colors.white,
+    this.style,
   });
 
   @override
@@ -119,6 +121,7 @@ class CustomTextField extends StatelessWidget {
               fontSize: 16,
             ),
       ),
+      style: style ?? const TextStyle(color: Colors.black),
       keyboardType: keyboardType,
       obscureText: obscureText,
       cursorColor: cursorColor,

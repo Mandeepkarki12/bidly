@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-String baseUrl = 'http://192.168.1.76/bidly_backend'; // mandeep api base url
+String baseUrl = 'http://192.168.1.70/bidly_backend'; // mandeep api base url
 
 // String baseUrl = "http://172.16.2.125/bidly_backend";
 
@@ -26,6 +26,7 @@ class AppApi {
   static AuthApis authApis = AuthApis();
   static ProfileApis profileApis = ProfileApis();
   static HomeApis homeApis = HomeApis();
+  static UploadProductApis uploadProductApis = UploadProductApis();
 }
 
 class AuthApis {
@@ -43,4 +44,9 @@ class ProfileApis {
   ProfileApis();
   String userDetails(String userId) =>
       "$appApisBaseURL/api/get_user_detail.php?id=$userId";
+}
+
+class UploadProductApis {
+  UploadProductApis();
+  String get uploadProduct => "$appApisBaseURL/api/add_product.php";
 }

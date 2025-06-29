@@ -4,11 +4,12 @@ import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/utils/injection_container.dart';
 import 'package:bidly/features/auth_screen/presentation/bloc/auth_screen_bloc.dart';
 import 'package:bidly/features/home_screen/presentation/bloc/home_screen_bloc.dart';
+import 'package:bidly/features/product_upload_screen/presentation/bloc/product_upload_screen_bloc.dart';
 import 'package:bidly/features/profile_screen/presentation/bloc/profile_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() async { 
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initDependencies();
   runApp(MultiBlocProvider(
@@ -20,6 +21,7 @@ void main() async {
         create: (_) => stl<ProfileScreenBloc>(),
       ),
       BlocProvider(create: (_) => stl<HomeScreenBloc>()),
+      BlocProvider(create: (_) => stl<ProductUploadScreenBloc>()),
     ],
     child: const MyApp(),
   ));

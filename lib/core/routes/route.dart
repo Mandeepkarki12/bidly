@@ -7,6 +7,7 @@ import 'package:bidly/features/auth_screen/presentation/pages/forget_password_sc
 import 'package:bidly/features/auth_screen/presentation/pages/login_screen.dart';
 import 'package:bidly/features/auth_screen/presentation/pages/signup_screen.dart';
 import 'package:bidly/features/home_screen/presentation/pages/home_screen.dart';
+import 'package:bidly/features/product_upload_screen/presentation/pages/product_upload_screen.dart';
 import 'package:bidly/features/profile_screen/presentation/pages/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
       case RouteNames.profileScreen:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
+      case RouteNames.productUploadScreen:
+        return MaterialPageRoute(builder: (_) => const ProductUploadScreen());
 
       default:
         return MaterialPageRoute(builder: (_) {

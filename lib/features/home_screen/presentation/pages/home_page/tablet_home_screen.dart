@@ -7,7 +7,6 @@ import 'package:bidly/core/widgets/custom_footer/custom_tablet_footer.dart';
 import 'package:bidly/core/widgets/custom_rounded_button.dart';
 import 'package:bidly/features/home_screen/presentation/bloc/home_screen_bloc.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/desktop_widgets/desktop_browse_categories.dart';
-
 import 'package:bidly/features/home_screen/presentation/widgets/mobile_widgets/mobile_drawer.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/tablet_widgets/tablet_auction_widget.dart';
 import 'package:bidly/features/home_screen/presentation/widgets/tablet_widgets/tablet_discover_more_aution.dart';

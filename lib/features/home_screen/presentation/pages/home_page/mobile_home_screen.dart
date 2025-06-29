@@ -1,3 +1,4 @@
+import 'package:bidly/core/routes/route_names.dart';
 import 'package:bidly/core/services/shared_prefrences.dart';
 import 'package:bidly/core/theme/app_color.dart';
 import 'package:bidly/core/theme/text_styles.dart';
@@ -183,7 +184,7 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
                                       width: 8,
                                     ),
                                     Text(
-                                       topUser?.profileImage ?? 'John Doe',
+                                      topUser?.profileImage ?? 'John Doe',
                                       style: const AppTextStyles()
                                           .baseBodyWorkSans,
                                     )
@@ -199,13 +200,16 @@ class _MobileHomeScreenState extends State<MobileHomeScreen> {
                       height: 40,
                     ),
                     CustomRoundedButton(
-                      onTap: () => {},
+                      onTap: () => {
+                        Navigator.pushNamed(
+                            context, RouteNames.productUploadScreen)
+                      },
                       height: 60,
                       width: double.infinity,
                       color: AppColors.primaryButton,
                       child: Center(
                         child: Text(
-                          'Get Started',
+                          'Create an Auction',
                           style: const AppTextStyles().bodyText,
                         ),
                       ),

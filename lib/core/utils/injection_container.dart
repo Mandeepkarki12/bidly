@@ -17,6 +17,11 @@ import 'package:bidly/features/home_screen/data/repositories/home_repositories_i
 import 'package:bidly/features/home_screen/domain/repositories/home_repositories.dart';
 import 'package:bidly/features/home_screen/domain/usecases/get_homedata_usecase.dart';
 import 'package:bidly/features/home_screen/presentation/bloc/home_screen_bloc.dart';
+import 'package:bidly/features/product_upload_screen/data/datasources/product_upload_datasource.dart';
+import 'package:bidly/features/product_upload_screen/data/repositories/product_upload_repository_impl.dart';
+import 'package:bidly/features/product_upload_screen/domain/repositories/product_upload_repositories.dart';
+import 'package:bidly/features/product_upload_screen/domain/usecases/upload_product_usecase.dart';
+import 'package:bidly/features/product_upload_screen/presentation/bloc/product_upload_screen_bloc.dart';
 import 'package:bidly/features/profile_screen/data/datasources/profile_datasource.dart';
 import 'package:bidly/features/profile_screen/data/repositories/profile_repositories_impl.dart';
 import 'package:bidly/features/profile_screen/domain/repositories/profile_repositories.dart';
@@ -31,6 +36,7 @@ Future<void> initDependencies() async {
   _initAuth();
   _initProfile();
   _initHome();
+  _initProductUpload();
   final supabase = await Supabase.initialize(
     url: AppSecrets.supabaseUrl,
     anonKey: AppSecrets.supabaseAnonKey,
@@ -104,5 +110,19 @@ void _initHome() {
       ));
   stl.registerLazySingleton(() => HomeScreenBloc(
         getHomeDataUsecase: stl<GetHomeDataUsecase>(),
+      ));
+}
+
+void _initProductUpload() {
+  stl.registerFactory<ProductUploadDataSource>(
+      () => ProductUploadDataSourceImpl());
+  stl.registerFactory<ProductUploadRepositories>(() =>
+      ProductUploadRepositoryImpl(
+          productUploadDataSource: stl<ProductUploadDataSource>()));
+  stl.registerFactory<UploadProductUseCase>(() => UploadProductUseCase(
+        productUploadRepositories: stl<ProductUploadRepositories>(),
+      ));
+  stl.registerLazySingleton(() => ProductUploadScreenBloc(
+        uploadProductUseCase: stl<UploadProductUseCase>(),
       ));
 }

@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           scaffoldBackgroundColor: AppColors.backGroundPrimary,
           useMaterial3: true),
-      initialRoute: RouteNames.productUploadScreen,
+      initialRoute: RouteNames.authGate,
       onGenerateRoute: Routes.generateRoute,
     );
   }

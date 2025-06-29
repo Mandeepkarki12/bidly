@@ -3,7 +3,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 String baseUrl = 'http://192.168.1.76/bidly_backend'; // mandeep api base url
 
-// String baseUrl = "http://172.16.2.125/bidly_backend";
+//String baseUrl = "http://192.168.18.205/bidly_backend";
 
 class AppApis {
   final Dio _dio = Dio();
